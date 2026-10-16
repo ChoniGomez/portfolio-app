@@ -3,25 +3,42 @@ export const aboutCode = `interface Developer {
   role: string;
   location: string;
   currentCompany: string;
-  skills: string[];
-  yearsOfExperience: number;
+  skills: {
+    frontend: string[];
+    backend: string[];
+    databases: string[];
+    aiAndVision: string[];
+    infrastructureAndNetworking: string[];
+    electronicsAndRobotics: string[];
+  };
 }
 
 // Personal Information
 const me: Developer = {
-  name: "Patrick Carter",
-  role: "Senior Sales Systems Analyst",
-  location: "Boston, MA",
-  currentCompany: "Datadog",
-  yearsOfExperience: 8,
-  skills: [
-    "React/Next.js",
-    "TypeScript",
-    "Salesforce Development",
-    "Node.js",
-    "Process Automation",
-    "Team Leadership",
-    "Project Management",
-    "System Integration",
-  ],
+  name: "Jonathan Matias Gomez",
+  role: "Ingeniero en Informática & Full Stack Developer",
+  location: "Posadas, Misiones, Argentina",
+  currentCompany: "Escuela de Robótica de Misiones",
+  skills: {
+    frontend: ["React", "Vue.js"],
+    backend: [
+      "Node.js (Fastify)",
+      "PHP (Laravel, CodeIgniter)",
+      "Java (Spring Boot)",
+    ],
+    databases: ["PostgreSQL", "MySQL", "Prisma ORM"],
+    aiAndVision: ["Python", "OpenCV", "YOLO", "MediaPipe"],
+    infrastructureAndNetworking: [
+      "Linux",
+      "Windows",
+      "Cisco Packet Tracer",
+      "Docker",
+    ],
+    electronicsAndRobotics: [
+      "Arduino",
+      "ESP32",
+      "C/C++",
+      "3D Printing",
+    ],
+  },
 };`;

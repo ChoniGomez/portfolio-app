@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 import { createPost } from "@/lib/actions";
 
 export const metadata: Metadata = {
-  title: "Guest Book | Patrick Carter",
+  title: "Guest Book | Jonathan Matias Gomez",
   description: "Sign my guest book and leave a message",
 };
 

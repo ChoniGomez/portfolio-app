@@ -19,7 +19,7 @@ export default function ProjectsPage() {
 
   return (
     <div className="p-4 text-gray-300">
-      <h1 className="mb-6 text-3xl font-bold">Project Categories</h1>
+      <h1 className="mb-6 text-3xl font-bold">Categorías de Proyectos</h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Object.entries(technologies).map(([technology, count]) => (
           <Link
@@ -32,7 +32,7 @@ export default function ProjectsPage() {
               {technology}
             </h2>
             <p className="text-sm text-gray-400">
-              {count} project{count === 1 ? "" : "s"}
+              {count} {count === 1 ? "proyecto" : "proyectos"}
             </p>
           </Link>
         ))}

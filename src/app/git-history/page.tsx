@@ -4,7 +4,7 @@ import { getGitHistory } from "@/lib/actions";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Git History | Patrick Carter",
+  title: "Git History | Jonathan Matias Gomez",
   description: "View the commit history of this portfolio project",
 };
 

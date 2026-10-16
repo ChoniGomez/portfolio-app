@@ -38,6 +38,7 @@ export default function CelestialObject() {
     const fetchAstronomyData = async () => {
       try {
         const data = await getAstronomyData();
+        if (!data) return;
         setAstronomyData(data);
 
         // Determine if it's night time

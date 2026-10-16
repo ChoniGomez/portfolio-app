@@ -1,7 +1,7 @@
 "use client";
 
 import { GitBranchIcon } from "lucide-react";
-import { SiSalesforce, SiLinkedin } from "react-icons/si";
+import { SiGithub, SiLinkedin } from "react-icons/si";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -53,7 +53,7 @@ export function Footer() {
       <div className="flex items-center gap-3">
         <Image src="/PC_Favicon.png" alt="PC Logo" width={16} height={16} />
         <Link
-          href="https://github.com/xCarter93"
+          href="https://github.com"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 hover:text-gray-300"
@@ -62,15 +62,15 @@ export function Footer() {
           <span>main</span>
         </Link>
         <Link
-          href="https://www.salesforce.com/trailblazer/pcarter8"
+          href="https://github.com"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center hover:text-gray-300"
         >
-          <SiSalesforce size={14} />
+          <SiGithub size={14} />
         </Link>
         <Link
-          href="https://www.linkedin.com/in/patrick-carter-306746a8/"
+          href="https://linkedin.com"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center hover:text-gray-300"

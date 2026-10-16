@@ -204,21 +204,55 @@ export async function sendEmail(prevState: EmailState, formData: FormData) {
   }
 }
 
-export async function getAstronomyData() {
+export interface AstronomyData {
+  sun_altitude: number;
+  sun_azimuth: number;
+  moon_altitude: number;
+  moon_azimuth: number;
+  moon_phase: string;
+  moon_illumination_percentage: string;
+  sunrise: string;
+  sunset: string;
+}
+
+const DEFAULT_ASTRONOMY_DATA: AstronomyData = {
+  sun_altitude: 45,
+  sun_azimuth: 180,
+  moon_altitude: -20,
+  moon_azimuth: 0,
+  moon_phase: "Full Moon",
+  moon_illumination_percentage: "100",
+  sunrise: "06:00",
+  sunset: "18:00",
+};
+
+export async function getAstronomyData(): Promise<AstronomyData> {
+  const apiKey = process.env.IP_GEOLOCATION_API_KEY;
+
+  if (!apiKey) {
+    console.warn(
+      "IP_GEOLOCATION_API_KEY no está definida. Usando datos astronómicos por defecto.",
+    );
+    return DEFAULT_ASTRONOMY_DATA;
+  }
+
   try {
-    const apiKey = process.env.IP_GEOLOCATION_API_KEY;
     const response = await fetch(
       `https://api.ipgeolocation.io/astronomy?apiKey=${apiKey}`,
       { next: { revalidate: 60 } }, // Cache for 1 minute
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch astronomy data");
+      console.warn(
+        `Error al consultar IP Geolocation API (${response.status}). Usando datos astronómicos por defecto.`,
+      );
+      return DEFAULT_ASTRONOMY_DATA;
     }
 
     return await response.json();
   } catch (error) {
     console.error("Error fetching astronomy data:", error);
-    throw new Error("Failed to fetch astronomy data");
+    return DEFAULT_ASTRONOMY_DATA;
   }
 }
+

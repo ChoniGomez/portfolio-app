@@ -16,9 +16,11 @@ interface PageProps {
 export default async function CategoryPage({ params }: PageProps) {
   const projects = getContents("projects");
   const { category } = await params;
+  const decodedCategory = decodeURIComponent(category).toLowerCase();
 
   const filteredProjects = projects.filter(
     (project) =>
+      project.metadata.technology?.toLowerCase() === decodedCategory ||
       project.metadata.technology?.toLowerCase() === category.toLowerCase(),
   );
 
@@ -34,7 +36,7 @@ export default async function CategoryPage({ params }: PageProps) {
           className="inline-flex items-center gap-2 text-gray-400 transition-colors hover:text-gray-200"
         >
           <ArrowLeft className="h-5 w-5" />
-          <span>Back to Categories</span>
+          <span>Volver a Categorías</span>
         </Link>
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

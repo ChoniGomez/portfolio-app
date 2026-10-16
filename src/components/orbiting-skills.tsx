@@ -241,22 +241,12 @@ const skillsConfig: SkillConfig[] = [
     label: 'Python'
   },
   { 
-    id: 'salesforce',
-    orbitRadius: 180, 
-    size: 45, 
-    speed: 0.5, 
-    iconType: 'salesforce', 
-    phaseShift: (2 * Math.PI) / 4, 
-    glowColor: 'purple',
-    label: 'Salesforce'
-  },
-  { 
     id: 'mongodb',
     orbitRadius: 180, 
     size: 45, 
     speed: 0.5, 
     iconType: 'mongodb', 
-    phaseShift: (4 * Math.PI) / 4, 
+    phaseShift: (2 * Math.PI) / 3, 
     glowColor: 'purple',
     label: 'MongoDB'
   },
@@ -266,7 +256,7 @@ const skillsConfig: SkillConfig[] = [
     size: 45, 
     speed: 0.5, 
     iconType: 'postgresql', 
-    phaseShift: (6 * Math.PI) / 4, 
+    phaseShift: (4 * Math.PI) / 3, 
     glowColor: 'purple',
     label: 'PostgreSQL'
   },

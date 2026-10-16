@@ -1,6 +1,5 @@
 import { StyledCode } from "@/components/StyledCode";
 import { aboutCode } from "@/markdown/about";
-import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -9,90 +8,70 @@ export default function AboutPage() {
         {/* Text Column */}
         <div className="space-y-6">
           <div>
-            <h1 className="mb-4 text-2xl font-bold text-slate-200">About Me</h1>
+            <h1 className="mb-4 text-2xl font-bold text-slate-200">Sobre Mí</h1>
             <p className="text-slate-400">
-              Hi, I&apos;m Patrick Carter, a passionate Full Stack Developer
-              with a deep love for creating elegant solutions to complex
-              problems. With a background in both front-end and back-end
-              development, I bring a comprehensive approach to web development.
+              Hola, soy Jonathan Matias Gomez, Ingeniero en Informática y Full
+              Stack Developer residiendo en Posadas, Misiones. Especializado en
+              el desarrollo de aplicaciones web modernas, inteligencia
+              artificial, visión por computadora y electrónica integrada. Combino
+              la excelencia técnica con la pasión por la enseñanza para
+              construir soluciones de software robustas y formar a la próxima
+              generación de desarrolladores.
             </p>
           </div>
 
           <div>
             <h2 className="mb-3 text-xl font-semibold text-slate-200">
-              What I Do
+              Habilidades Técnicas
             </h2>
-            <p className="mb-4 text-slate-400">
-              I specialize in building modern web applications and Salesforce
-              solutions using cutting-edge technologies. My expertise includes:
-            </p>
-            <ul className="list-inside list-disc space-y-2 text-slate-400">
-              <li>Full-stack development with Next.js and TypeScript</li>
-              <li>Salesforce development and administration</li>
-              <li>Building responsive and accessible user interfaces</li>
-              <li>Database design and optimization</li>
-              <li>API development and integration</li>
-              <li>Performance optimization and scalability</li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="mb-3 text-xl font-semibold text-slate-200">
-              Salesforce Certifications
-            </h2>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              <Image
-                src="/jd1_cert.png"
-                alt="Salesforce JavaScript Developer I"
-                width={150}
-                height={150}
-                className="rounded-lg transition-transform hover:scale-105"
-              />
-              <Image
-                src="/pba_cert.png"
-                alt="Salesforce Platform App Builder"
-                width={150}
-                height={150}
-                className="rounded-lg transition-transform hover:scale-105"
-              />
-              <Image
-                src="/sfadmin_cert.png"
-                alt="Salesforce Administrator"
-                width={150}
-                height={150}
-                className="rounded-lg transition-transform hover:scale-105"
-              />
-              <Image
-                src="/pd1_cert.png"
-                alt="Salesforce Platform Developer I"
-                width={150}
-                height={150}
-                className="rounded-lg transition-transform hover:scale-105"
-              />
+            <div className="space-y-3 text-slate-400">
+              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
+                <span className="font-semibold text-slate-200">Frontend: </span>
+                React, Vue.js
+              </div>
+              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
+                <span className="font-semibold text-slate-200">Backend: </span>
+                Node.js (Fastify), PHP (Laravel, CodeIgniter), Java (Spring Boot)
+              </div>
+              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
+                <span className="font-semibold text-slate-200">Bases de Datos: </span>
+                PostgreSQL, MySQL, Prisma ORM
+              </div>
+              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
+                <span className="font-semibold text-slate-200">IA y Visión: </span>
+                Python, OpenCV, YOLO, MediaPipe
+              </div>
+              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
+                <span className="font-semibold text-slate-200">Infraestructura y Redes: </span>
+                Linux, Windows, Cisco Packet Tracer, Docker
+              </div>
+              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
+                <span className="font-semibold text-slate-200">Electrónica y Robótica: </span>
+                Arduino, ESP32, C/C++, 3D Printing
+              </div>
             </div>
           </div>
 
           <div>
             <h2 className="mb-3 text-xl font-semibold text-slate-200">
-              My Approach
+              Mi Enfoque
             </h2>
             <p className="text-slate-400">
-              I believe in writing clean, maintainable code that solves
-              real-world problems. I&apos;m constantly learning and adapting to
-              new technologies while maintaining a strong foundation in software
-              development principles.
+              Creo firmemente en escribir software limpio, escalable y
+              mantenible, integrando hardware y software para resolver desafíos
+              del mundo real. La docencia y la creación tecnológica van de la
+              mano en cada uno de mis proyectos.
             </p>
           </div>
 
           <div>
             <h2 className="mb-3 text-xl font-semibold text-slate-200">
-              Let&apos;s Connect
+              Conectemos
             </h2>
             <p className="text-slate-400">
-              I&apos;m always interested in new opportunities and
-              collaborations. Whether you have a project in mind or just want to
-              connect, feel free to reach out through any of my social platforms
-              or the contact form.
+              Siempre estoy interesado en nuevas oportunidades, proyectos y
+              colaboraciones. ¡Construyamos algo increíble juntos! Puedes
+              contactarme a través del formulario o de mis canales de contacto.
             </p>
           </div>
         </div>
