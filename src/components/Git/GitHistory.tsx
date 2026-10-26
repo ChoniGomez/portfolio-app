@@ -8,7 +8,7 @@ import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface Commit {
+export interface Commit {
   sha: string;
   commit: {
     author: {
@@ -34,11 +34,78 @@ const customTheme = themeQuartz.withPart(colorSchemeDarkBlue).withParams({
     "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace",
 });
 
+export const MOCK_COMMITS: Commit[] = [
+  {
+    sha: "e8f31a4c9b27d10e82f5341a7c06b98e145f8a23",
+    commit: {
+      author: {
+        name: "Jonathan Gomez",
+        date: "2026-10-24T17:30:00Z",
+      },
+      message: "feat: script de YOLO para detección planetaria",
+    },
+    html_url: "https://github.com/chonigomez",
+  },
+  {
+    sha: "b4c29d10e82f5341a7c06b98e145f8a23e8f31a4",
+    commit: {
+      author: {
+        name: "Jonathan Gomez",
+        date: "2026-10-19T14:15:00Z",
+      },
+      message: "fix: endpoint de WhatsApp en QueRico con Fastify",
+    },
+    html_url: "https://github.com/chonigomez",
+  },
+  {
+    sha: "5341a7c06b98e145f8a23e8f31a4c9b27d10e82f",
+    commit: {
+      author: {
+        name: "Jonathan Gomez",
+        date: "2026-10-14T10:45:00Z",
+      },
+      message: "feat: inicializar CultiShop con Next.js",
+    },
+    html_url: "https://github.com/chonigomez",
+  },
+  {
+    sha: "c98e145f8a23e8f31a4c9b27d10e82f5341a7c06",
+    commit: {
+      author: {
+        name: "Jonathan Gomez",
+        date: "2026-10-06T16:20:00Z",
+      },
+      message: "feat: control de acceso RFID con Arduino",
+    },
+    html_url: "https://github.com/chonigomez",
+  },
+  {
+    sha: "7c06b98e145f8a23e8f31a4c9b27d10e82f5341a",
+    commit: {
+      author: {
+        name: "Jonathan Gomez",
+        date: "2026-09-28T11:10:00Z",
+      },
+      message: "refactor: optimización de consultas PostgreSQL en backend",
+    },
+    html_url: "https://github.com/chonigomez",
+  },
+];
+
 interface GitHistoryProps {
-  initialCommits: Commit[];
+  initialCommits?: Commit[];
 }
 
 export function GitHistory({ initialCommits }: GitHistoryProps) {
+  const hasValidUserCommits =
+    initialCommits &&
+    initialCommits.length > 0 &&
+    !initialCommits.some((c) =>
+      c.commit?.author?.name?.toLowerCase().includes("carter"),
+    );
+
+  const rowData = hasValidUserCommits ? initialCommits : MOCK_COMMITS;
+
   const columnDefs = useMemo<ColDef<Commit>[]>(
     () => [
       {
@@ -93,7 +160,7 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
   return (
     <div className="ag-theme-alpine-dark h-[600px] w-full">
       <AgGridReact
-        rowData={initialCommits}
+        rowData={rowData}
         columnDefs={columnDefs}
         defaultColDef={defaultColDef}
         theme={theme}

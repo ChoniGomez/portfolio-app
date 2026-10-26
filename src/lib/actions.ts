@@ -59,7 +59,7 @@ export async function getGitHubProfile() {
       },
       body: JSON.stringify({
         query: GITHUB_PROFILE_QUERY,
-        variables: { userName: "ChoniGomez" },
+        variables: { userName: "chonigomez" },
       }),
     });
 
@@ -85,7 +85,7 @@ export async function getGitHubContributions() {
       },
       body: JSON.stringify({
         query: GITHUB_CONTRIBUTIONS_QUERY,
-        variables: { userName: "ChoniGomez" },
+        variables: { userName: "chonigomez" },
       }),
     });
 
@@ -102,7 +102,7 @@ export async function getGitHubContributions() {
 }
 
 export async function getGitHistory() {
-  const owner = "ChoniGomez";
+  const owner = "chonigomez";
   const repo = "portfolio-app";
 
   try {
