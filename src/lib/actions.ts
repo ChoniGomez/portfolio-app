@@ -59,7 +59,7 @@ export async function getGitHubProfile() {
       },
       body: JSON.stringify({
         query: GITHUB_PROFILE_QUERY,
-        variables: { userName: "xCarter93" },
+        variables: { userName: "ChoniGomez" },
       }),
     });
 
@@ -85,7 +85,7 @@ export async function getGitHubContributions() {
       },
       body: JSON.stringify({
         query: GITHUB_CONTRIBUTIONS_QUERY,
-        variables: { userName: "xCarter93" },
+        variables: { userName: "ChoniGomez" },
       }),
     });
 
@@ -102,28 +102,35 @@ export async function getGitHubContributions() {
 }
 
 export async function getGitHistory() {
+  const owner = "ChoniGomez";
+  const repo = "portfolio-app";
+
   try {
-    const owner = "xCarter93";
-    const repo = "nextjs-portfolio-app";
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/commits`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.GITHUB_PAT}`,
+          ...(process.env.GITHUB_PAT
+            ? { Authorization: `Bearer ${process.env.GITHUB_PAT}` }
+            : {}),
           "Content-Type": "application/json",
         },
+        next: { revalidate: 300 },
       },
     );
 
     if (!response.ok) {
-      throw new Error(`GitHub API responded with status ${response.status}`);
+      console.warn(
+        `GitHub API responded with status ${response.status} for ${owner}/${repo}`,
+      );
+      return [];
     }
 
     const commits = await response.json();
-    return commits;
+    return Array.isArray(commits) ? commits : [];
   } catch (error) {
     console.error("Error fetching commits:", error);
-    throw new Error("Failed to fetch commits");
+    return [];
   }
 }
 
@@ -255,4 +262,3 @@ export async function getAstronomyData(): Promise<AstronomyData> {
     return DEFAULT_ASTRONOMY_DATA;
   }
 }
-

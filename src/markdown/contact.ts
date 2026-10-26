@@ -5,7 +5,7 @@ export const contactCode = `{
   },
 
   "socialLinks": {
-    "github": "https://github.com",
+    "github": "https://github.com/ChoniGomez",
     "linkedin": "https://linkedin.com"
   }
 }`;

@@ -37,8 +37,8 @@ export function NavigationButtons() {
         Get in Touch
       </Link>
       <a
-        href="/resume.pdf"
-        download
+        href="/CV%20-%20Jonathan%20M%20Gomez.pdf"
+        download="CV - Jonathan M Gomez.pdf"
         className="rounded border border-[#18B4C8] px-4 py-2 text-[#18B4C8] transition-colors hover:bg-[#18B4C8] hover:text-gray-900"
       >
         Download Resume

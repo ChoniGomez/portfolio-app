@@ -53,7 +53,7 @@ export function Footer() {
       <div className="flex items-center gap-3">
         <Image src="/PC_Favicon.png" alt="PC Logo" width={16} height={16} />
         <Link
-          href="https://github.com"
+          href="https://github.com/ChoniGomez"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 hover:text-gray-300"
@@ -62,7 +62,7 @@ export function Footer() {
           <span>main</span>
         </Link>
         <Link
-          href="https://github.com"
+          href="https://github.com/ChoniGomez"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center hover:text-gray-300"
@@ -101,3 +101,4 @@ export function Footer() {
     </div>
   );
 }
+
