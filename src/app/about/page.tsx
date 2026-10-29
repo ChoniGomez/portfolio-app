@@ -1,5 +1,27 @@
 import { StyledCode } from "@/components/StyledCode";
 import { aboutCode } from "@/markdown/about";
+import { Badge } from "@/components/ui/badge";
+
+const technologies = [
+  "Python",
+  "Java",
+  "C++",
+  "PHP",
+  "JavaScript",
+  "TypeScript",
+  "Node.js",
+  "Spring Boot",
+  "CodeIgniter",
+  "React",
+  "Next.js",
+  "Angular",
+  "Vue.js",
+  "OpenCV",
+  "PostgreSQL",
+  "MySQL",
+  "MongoDB",
+  "Arduino",
+];
 
 export default function AboutPage() {
   return (
@@ -22,33 +44,18 @@ export default function AboutPage() {
 
           <div>
             <h2 className="mb-3 text-xl font-semibold text-slate-200">
-              Habilidades Técnicas
+              Tecnologías y Herramientas
             </h2>
-            <div className="space-y-3 text-slate-400">
-              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
-                <span className="font-semibold text-slate-200">Frontend: </span>
-                React, Vue.js
-              </div>
-              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
-                <span className="font-semibold text-slate-200">Backend: </span>
-                Node.js (Fastify), PHP (Laravel, CodeIgniter), Java (Spring Boot)
-              </div>
-              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
-                <span className="font-semibold text-slate-200">Bases de Datos: </span>
-                PostgreSQL, MySQL, Prisma ORM
-              </div>
-              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
-                <span className="font-semibold text-slate-200">IA y Visión: </span>
-                Python, OpenCV, YOLO, MediaPipe
-              </div>
-              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
-                <span className="font-semibold text-slate-200">Infraestructura y Redes: </span>
-                Linux, Windows, Cisco Packet Tracer, Docker
-              </div>
-              <div className="rounded-lg border border-gray-800 bg-gray-900/40 p-3">
-                <span className="font-semibold text-slate-200">Electrónica y Robótica: </span>
-                Arduino, ESP32, C/C++, 3D Printing
-              </div>
+            <div className="flex flex-wrap gap-2">
+              {technologies.map((tech) => (
+                <Badge
+                  key={tech}
+                  variant="secondary"
+                  className="rounded-md border border-gray-700 bg-gray-800/80 px-3 py-1.5 text-sm font-medium text-slate-200 transition-colors hover:border-gray-600 hover:bg-gray-700 hover:text-white"
+                >
+                  {tech}
+                </Badge>
+              ))}
             </div>
           </div>
 

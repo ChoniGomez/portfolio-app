@@ -20,14 +20,14 @@ const me: Developer = {
   location: "Posadas, Misiones, Argentina",
   currentCompany: "Escuela de Robótica de Misiones",
   skills: {
-    frontend: ["React", "Vue.js"],
+    frontend: ["React", "Next.js", "Angular", "Vue.js", "TypeScript", "JavaScript"],
     backend: [
-      "Node.js (Fastify)",
-      "PHP (Laravel, CodeIgniter)",
+      "Node.js",
+      "PHP (CodeIgniter)",
       "Java (Spring Boot)",
     ],
-    databases: ["PostgreSQL", "MySQL", "Prisma ORM"],
-    aiAndVision: ["Python", "OpenCV", "YOLO", "MediaPipe"],
+    databases: ["PostgreSQL", "MySQL", "MongoDB"],
+    aiAndVision: ["Python", "OpenCV"],
     infrastructureAndNetworking: [
       "Linux",
       "Windows",
@@ -36,9 +36,7 @@ const me: Developer = {
     ],
     electronicsAndRobotics: [
       "Arduino",
-      "ESP32",
-      "C/C++",
-      "3D Printing",
+      "C++",
     ],
   },
 };`;
