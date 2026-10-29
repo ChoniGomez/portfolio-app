@@ -3,17 +3,17 @@ import { z } from "zod";
 export const contactFormSchema = z.object({
   name: z
     .string()
-    .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must be less than 50 characters"),
+    .min(2, "El nombre debe tener al menos 2 caracteres")
+    .max(50, "El nombre no puede superar los 50 caracteres"),
   email: z
     .string()
-    .email("Please enter a valid email address")
-    .min(5, "Email must be at least 5 characters")
-    .max(100, "Email must be less than 100 characters"),
+    .email("Por favor ingresa un correo electrónico válido")
+    .min(5, "El correo debe tener al menos 5 caracteres")
+    .max(100, "El correo no puede superar los 100 caracteres"),
   message: z
     .string()
-    .min(1, "Message must be at least 1 character")
-    .max(1000, "Message must be less than 1000 characters"),
+    .min(1, "El mensaje no puede estar vacío")
+    .max(1000, "El mensaje no puede superar los 1000 caracteres"),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;

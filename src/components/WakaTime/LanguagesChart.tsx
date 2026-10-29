@@ -43,7 +43,7 @@ export default function LanguagesChart({ data }: { data: LanguageData[] }) {
   return (
     <div className="h-[30vh] w-full rounded-lg bg-gray-800">
       <h2 className="mb-4 text-center text-lg font-medium text-gray-200">
-        Languages Used (Last 30 Days)
+        Lenguajes Utilizados (Últimos 30 Días)
       </h2>
       <div className="h-[calc(100%-2rem)]">
         <ResponsiveContainer width="100%" height="100%">
@@ -87,8 +87,8 @@ export default function LanguagesChart({ data }: { data: LanguageData[] }) {
                     )
                     .join("\n");
                   return [
-                    `${value.toFixed(1)}%\n\nBreakdown of languages under 1%:\n${breakdownText}`,
-                    name,
+                    `${value.toFixed(1)}%\n\nDesglose de lenguajes menores al 1%:\n${breakdownText}`,
+                    "Otros",
                   ];
                 }
                 return [`${value.toFixed(1)}%`, name];

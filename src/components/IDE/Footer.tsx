@@ -29,7 +29,7 @@ function LastUpdated() {
 
   return (
     <div className="flex items-center gap-1">
-      <span>Last Updated: {lastUpdated}</span>
+      <span>Última actualización: {lastUpdated}</span>
     </div>
   );
 }
@@ -80,7 +80,7 @@ export function Footer() {
         <Link
           href="/coding-stats"
           className="flex items-center hover:text-gray-300"
-          title="Coding Stats"
+          title="Estadísticas de código"
           onClick={handleStatsClick}
         >
           <Image

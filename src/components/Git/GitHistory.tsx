@@ -110,8 +110,8 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
     () => [
       {
         field: "sha",
-        headerName: "Commit Hash",
-        width: 100,
+        headerName: "Hash de Commit",
+        width: 140,
         cellRenderer: (params: ICellRendererParams) => {
           return (
             <a
@@ -127,18 +127,18 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
       },
       {
         field: "commit.author.name",
-        headerName: "Author",
-        width: 150,
+        headerName: "Autor",
+        width: 170,
       },
       {
         field: "commit.message",
-        headerName: "Message",
+        headerName: "Mensaje",
         flex: 1,
       },
       {
         field: "commit.author.date",
-        headerName: "Date",
-        width: 200,
+        headerName: "Fecha",
+        width: 180,
         cellRenderer: (params: ICellRendererParams) => {
           return new Date(params.value).toLocaleDateString();
         },

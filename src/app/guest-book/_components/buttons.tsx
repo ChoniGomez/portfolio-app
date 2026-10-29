@@ -15,7 +15,7 @@ export const SignIn = (
         {...props}
       >
         <SiGithub />
-        SignIn
+        Iniciar Sesión
       </Button>
     </SignInButton>
   );
@@ -33,7 +33,7 @@ export const Submit = (
       disabled={pending || props.disabled}
       {...props}
     >
-      {pending ? "Loading..." : "Submit"}
+      {pending ? "Enviando..." : "Publicar"}
     </Button>
   );
 };

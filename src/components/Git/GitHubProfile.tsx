@@ -55,15 +55,15 @@ export function GitHubProfile({
         </div>
         <div className="hidden sm:flex sm:items-center sm:gap-4">
           <div className="text-base text-gray-200">
-            {initialProfile.repositories.totalCount} repositories
+            {initialProfile.repositories.totalCount} repositorios
           </div>
           <div className="h-6 w-0.5 bg-gray-600" />
           <div className="text-base text-gray-200">
-            {initialProfile.followers.totalCount} followers
+            {initialProfile.followers.totalCount} seguidores
           </div>
           <div className="h-6 w-0.5 bg-gray-600" />
           <div className="text-base text-gray-200">
-            {initialProfile.following.totalCount} following
+            {initialProfile.following.totalCount} siguiendo
           </div>
         </div>
       </div>

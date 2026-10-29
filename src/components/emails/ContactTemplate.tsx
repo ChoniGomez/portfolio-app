@@ -20,7 +20,7 @@ export const ContactTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
     }}
   >
     <h1 style={{ color: "#2563eb", marginBottom: "24px" }}>
-      New Contact Form Message
+      Nuevo Mensaje desde el Portafolio
     </h1>
 
     <div
@@ -31,8 +31,8 @@ export const ContactTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
         marginBottom: "20px",
       }}
     >
-      <h2 style={{ color: "#1e293b", marginBottom: "16px" }}>From: {name}</h2>
-      <p style={{ color: "#475569", marginBottom: "8px" }}>Email: {email}</p>
+      <h2 style={{ color: "#1e293b", marginBottom: "16px" }}>De: {name}</h2>
+      <p style={{ color: "#475569", marginBottom: "8px" }}>Correo: {email}</p>
     </div>
 
     <div
@@ -42,7 +42,7 @@ export const ContactTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
         borderRadius: "8px",
       }}
     >
-      <h3 style={{ color: "#1e293b", marginBottom: "12px" }}>Message:</h3>
+      <h3 style={{ color: "#1e293b", marginBottom: "12px" }}>Mensaje:</h3>
       <p
         style={{ color: "#475569", lineHeight: "1.6", whiteSpace: "pre-wrap" }}
       >

@@ -14,20 +14,23 @@ export async function sendEmail(prevState: State, formData: FormData) {
   const message = formData.get("message") as string;
 
   if (!name || !email || !message) {
-    throw new Error("Please fill in all fields.");
+    throw new Error("Por favor completa todos los campos.");
   }
+
+  const recipientEmail =
+    process.env.CONTACT_EMAIL || "ing.gomezjonathan@gmail.com";
 
   try {
     await resend.emails.send({
       from: "Portfolio Contact Form <onboarding@resend.dev>",
-      to: ["xcarter93@gmail.com"],
-      subject: `${name} has reached out!`,
+      to: [recipientEmail],
+      subject: `${name} se ha puesto en contacto desde el Portfolio`,
       replyTo: email,
       react: createElement(ContactTemplate, { name, email, message }),
     });
 
     return { success: true };
   } catch {
-    throw new Error("Failed to send message. Please try again.");
+    throw new Error("No se pudo enviar el mensaje. Por favor intenta de nuevo.");
   }
 }

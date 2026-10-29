@@ -28,7 +28,7 @@ export function ContributionGraph({ contributions }: ContributionGraphProps) {
   return (
     <div className="flex flex-col items-center space-y-2">
       <div className="text-sm text-gray-400">
-        {contributions.totalContributions} contributions in the last year
+        {contributions.totalContributions} contribuciones en el último año
       </div>
       <div className="w-full overflow-x-auto">
         <div className="min-w-max px-4">
@@ -41,7 +41,7 @@ export function ContributionGraph({ contributions }: ContributionGraphProps) {
                     className={`h-3 w-3 rounded-sm ${getContributionColor(
                       day.contributionCount,
                     )}`}
-                    title={`${day.contributionCount} contributions on ${new Date(
+                    title={`${day.contributionCount} contribuciones el ${new Date(
                       day.date,
                     ).toLocaleDateString()}`}
                   />

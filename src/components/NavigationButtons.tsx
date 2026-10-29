@@ -12,7 +12,7 @@ export function NavigationButtons() {
     <div className="flex flex-wrap gap-4">
       <Link
         href="/about"
-        className="rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+        className="rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
         onClick={() =>
           addTab({
             name: "about.ts",
@@ -21,11 +21,11 @@ export function NavigationButtons() {
           })
         }
       >
-        Learn More
+        Saber más
       </Link>
       <Link
         href="/contact"
-        className="rounded-md border border-slate-600 px-4 py-2 text-slate-200 transition-all duration-200 hover:border-slate-400 hover:bg-slate-800 hover:text-white"
+        className="rounded-md border border-slate-600 px-4 py-2 font-medium text-slate-200 transition-all duration-200 hover:border-slate-400 hover:bg-slate-800 hover:text-white"
         onClick={() =>
           addTab({
             name: "contact.json",
@@ -34,14 +34,14 @@ export function NavigationButtons() {
           })
         }
       >
-        Get in Touch
+        Contacto
       </Link>
       <a
         href="/CV - Jonathan M Gomez.pdf"
         download="CV - Jonathan M Gomez.pdf"
-        className="rounded border border-[#18B4C8] px-4 py-2 text-[#18B4C8] transition-colors hover:bg-[#18B4C8] hover:text-gray-900"
+        className="rounded border border-[#18B4C8] px-4 py-2 font-medium text-[#18B4C8] transition-colors hover:bg-[#18B4C8] hover:text-gray-900"
       >
-        Download Resume
+        Descargar CV
       </a>
     </div>
   );

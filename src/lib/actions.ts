@@ -195,19 +195,21 @@ export async function sendEmail(prevState: EmailState, formData: FormData) {
   }
 
   const validatedData = result.data;
+  const recipientEmail =
+    process.env.CONTACT_EMAIL || "ing.gomezjonathan@gmail.com";
 
   try {
     await resend.emails.send({
       from: "Portfolio Contact Form <onboarding@resend.dev>",
-      to: ["xcarter93@gmail.com"],
-      subject: `${validatedData.name} has reached out!`,
+      to: [recipientEmail],
+      subject: `${validatedData.name} se ha puesto en contacto desde el Portfolio`,
       replyTo: validatedData.email,
       react: createElement(ContactTemplate, validatedData),
     });
 
     return { success: true };
   } catch {
-    throw new Error("Failed to send message. Please try again.");
+    throw new Error("No se pudo enviar el mensaje. Por favor intenta de nuevo.");
   }
 }
 

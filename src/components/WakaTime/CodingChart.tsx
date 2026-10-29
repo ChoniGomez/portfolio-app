@@ -20,7 +20,7 @@ export default function CodingChart({ data }: { data: ChartData[] }) {
   return (
     <div className="h-[30vh] w-full rounded-lg bg-gray-800">
       <h2 className="mb-4 text-center text-lg font-medium text-gray-200">
-        Coding Activity (Last 30 Days)
+        Actividad de Programación (Últimos 30 Días)
       </h2>
       <div className="h-[calc(100%-2rem)]">
         <ResponsiveContainer width="100%" height="100%">
@@ -39,7 +39,7 @@ export default function CodingChart({ data }: { data: ChartData[] }) {
               stroke="#9CA3AF"
               tick={{ fill: "#9CA3AF" }}
               label={{
-                value: "Hours",
+                value: "Horas",
                 angle: -90,
                 position: "insideLeft",
                 fill: "#9CA3AF",
@@ -55,8 +55,8 @@ export default function CodingChart({ data }: { data: ChartData[] }) {
               }}
               labelStyle={{ color: "#F3F4F6" }}
               formatter={(value: number) => [
-                `${value.toFixed(2)} hours`,
-                "Coding Time",
+                `${value.toFixed(2)} horas`,
+                "Tiempo de Programación",
               ]}
             />
             <Area

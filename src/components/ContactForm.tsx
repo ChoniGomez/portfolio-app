@@ -12,9 +12,9 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:hover:bg-blue-600"
+      className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:hover:bg-blue-600 transition-colors"
     >
-      {pending ? "Sending..." : "Send Message"}
+      {pending ? "Enviando..." : "Enviar mensaje"}
     </button>
   );
 }
@@ -24,8 +24,8 @@ export function ContactForm() {
     async (prevState: { success: boolean } | null, formData: FormData) => {
       try {
         const result = await sendEmail(prevState, formData);
-        if (result.success) {
-          toast.success("Message sent successfully!");
+        if (result?.success) {
+          toast.success("¡Mensaje enviado con éxito!");
           // Reset form
           const form = document.querySelector("form") as HTMLFormElement;
           form?.reset();
@@ -33,7 +33,9 @@ export function ContactForm() {
         return result;
       } catch (error) {
         toast.error(
-          error instanceof Error ? error.message : "Something went wrong",
+          error instanceof Error
+            ? error.message
+            : "Ocurrió un error al enviar el mensaje",
         );
         return null;
       }
@@ -48,13 +50,14 @@ export function ContactForm() {
           htmlFor="name"
           className="mb-2 block text-sm font-medium text-gray-200"
         >
-          Name
+          Nombre
         </label>
         <input
           type="text"
           id="name"
           name="name"
-          className="w-full rounded-md border border-gray-600 bg-gray-700 px-4 py-2 text-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Tu nombre completo"
+          className="w-full rounded-md border border-gray-600 bg-gray-700 px-4 py-2 text-gray-200 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
           formNoValidate
         />
@@ -65,13 +68,14 @@ export function ContactForm() {
           htmlFor="email"
           className="mb-2 block text-sm font-medium text-gray-200"
         >
-          Email
+          Correo electrónico
         </label>
         <input
           type="email"
           id="email"
           name="email"
-          className="w-full rounded-md border border-gray-600 bg-gray-700 px-4 py-2 text-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="tu-correo@ejemplo.com"
+          className="w-full rounded-md border border-gray-600 bg-gray-700 px-4 py-2 text-gray-200 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
           formNoValidate
         />
@@ -82,13 +86,14 @@ export function ContactForm() {
           htmlFor="message"
           className="mb-2 block text-sm font-medium text-gray-200"
         >
-          Message
+          Mensaje
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
-          className="w-full rounded-md border border-gray-600 bg-gray-700 px-4 py-2 text-gray-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Escribe tu mensaje aquí..."
+          className="w-full rounded-md border border-gray-600 bg-gray-700 px-4 py-2 text-gray-200 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
       </div>

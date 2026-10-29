@@ -10,7 +10,7 @@ export default function ContactPage() {
         <div className="mb-6 mt-4">
           <div className="rounded-lg bg-gray-800">
             <h2 className="mb-6 px-6 pt-6 text-xl font-semibold text-gray-200">
-              Reach out via Social Links
+              Enlaces de Contacto y Redes
             </h2>
             <StyledCode code={contactCode} language="json" />
           </div>
@@ -23,7 +23,7 @@ export default function ContactPage() {
         <div className="mb-6 mt-4">
           <div className="rounded-lg bg-gray-800 p-6">
             <h2 className="mb-6 text-xl font-semibold text-gray-200">
-              Get in Touch
+              Envíame un mensaje
             </h2>
             <ContactForm />
           </div>
