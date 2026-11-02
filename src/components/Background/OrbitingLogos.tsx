@@ -8,12 +8,27 @@ import { useIDEWindow } from "@/contexts/IDEWindowContext";
 interface TechItem {
   slug: string;
   name: string;
+  color?: string; // Color personalizado para SimpleIcons (ej. "white", "ffffff", "ED8B00")
+  isDark?: boolean; // Forzar estilo de alto contraste para fondos oscuros
 }
+
+// Conjunto de slugs naturalmente oscuros/negros para garantizar contraste
+const DARK_SLUGS = new Set([
+  "nextdotjs",
+  "github",
+  "vercel",
+  "express",
+  "prisma",
+  "apple",
+  "x",
+  "socketdotio",
+  "flask",
+]);
 
 // 17 tecnologías del stack real del usuario
 const orbit1: TechItem[] = [
   { slug: "react", name: "React" },
-  { slug: "nextdotjs", name: "Next.js" },
+  { slug: "nextdotjs", name: "Next.js", color: "white", isDark: true }, // Resaltado en blanco para modo oscuro
   { slug: "typescript", name: "TypeScript" },
   { slug: "javascript", name: "JavaScript" },
 ];
@@ -21,7 +36,7 @@ const orbit1: TechItem[] = [
 const orbit2: TechItem[] = [
   { slug: "python", name: "Python" },
   { slug: "nodedotjs", name: "Node.js" },
-  { slug: "openjdk", name: "Java" }, // Corregido: simple-icons utiliza el slug 'openjdk' para Java
+  { slug: "openjdk", name: "Java", color: "ED8B00" }, // Icono oficial de Java (OpenJDK) con color naranja característico
   { slug: "springboot", name: "Spring Boot" },
   { slug: "php", name: "PHP" },
   { slug: "codeigniter", name: "CodeIgniter" },
@@ -68,6 +83,19 @@ export function OrbitingLogos() {
       const x = radius * Math.cos(rad);
       const y = radius * Math.sin(rad);
 
+      // Determinar si el ícono es naturalmente oscuro o requiere tratamiento de alto contraste
+      const isDark =
+        Boolean(item.isDark) ||
+        DARK_SLUGS.has(item.slug) ||
+        item.color?.toLowerCase() === "white" ||
+        item.color?.toLowerCase() === "ffffff";
+
+      // Parámetro de color dinámico para SimpleIcons CDN
+      const iconColor = item.color || (isDark ? "white" : undefined);
+      const iconUrl = iconColor
+        ? `https://cdn.simpleicons.org/${item.slug}/${iconColor}`
+        : `https://cdn.simpleicons.org/${item.slug}`;
+
       return (
         <div
           key={item.slug}
@@ -84,24 +112,38 @@ export function OrbitingLogos() {
             style={{ transformOrigin: "center center" }}
           >
             <div
-              className="group relative flex h-9 w-9 items-center justify-center rounded-full border border-cyan-500/30 bg-gray-900/90 p-1.5 shadow-lg shadow-black/60 backdrop-blur-sm transition-all duration-200 hover:scale-125 hover:border-cyan-400 hover:bg-gray-800 hover:shadow-cyan-500/40 cursor-pointer"
+              className={`group relative flex h-9 w-9 items-center justify-center rounded-full border p-1.5 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-125 cursor-pointer ${
+                isDark
+                  ? "border-white/40 bg-gray-900/95 shadow-white/10 hover:border-white hover:shadow-white/30"
+                  : "border-cyan-500/30 bg-gray-900/90 shadow-black/60 hover:border-cyan-400 hover:bg-gray-800 hover:shadow-cyan-500/40"
+              }`}
               title={item.name}
             >
+              {/* Fondo circular blanco semitransparente para íconos naturalmente oscuros */}
+              {isDark && (
+                <div className="absolute inset-1 rounded-full bg-white/15 pointer-events-none" />
+              )}
+
               {failedIcons[item.slug] && item.name === "Java" ? (
-                <FaJava className="h-5 w-5 text-[#ED8B00]" />
+                <FaJava className="relative z-10 h-5 w-5 text-[#ED8B00]" />
               ) : (
                 <Image
-                  src={`https://cdn.simpleicons.org/${item.slug}`}
+                  src={iconUrl}
                   alt={item.name}
                   width={20}
                   height={20}
-                  className="h-5 w-5 object-contain pointer-events-none"
+                  className={`relative z-10 h-5 w-5 object-contain pointer-events-none transition-all ${
+                    isDark
+                      ? "filter drop-shadow-[0_0_2px_rgba(255,255,255,0.7)]"
+                      : ""
+                  }`}
                   unoptimized
                   onError={() =>
                     setFailedIcons((prev) => ({ ...prev, [item.slug]: true }))
                   }
                 />
               )}
+
               {/* Tooltip con nombre de la tecnología */}
               <span className="pointer-events-none absolute -bottom-6 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded border border-gray-700 bg-gray-900/95 px-1.5 py-0.5 text-[10px] font-medium text-cyan-300 opacity-0 shadow transition-opacity duration-150 group-hover:opacity-100">
                 {item.name}
