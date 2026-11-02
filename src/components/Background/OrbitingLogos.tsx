@@ -3,12 +3,13 @@
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { FaJava } from "react-icons/fa";
+import { SiMysql } from "react-icons/si";
 import { useIDEWindow } from "@/contexts/IDEWindowContext";
 
 interface TechItem {
   slug: string;
   name: string;
-  color?: string; // Color personalizado para SimpleIcons (ej. "white", "ffffff", "ED8B00")
+  color?: string; // Color personalizado para SimpleIcons (ej. "white", "ffffff", "00B4D8")
   isDark?: boolean; // Forzar estilo de alto contraste para fondos oscuros
 }
 
@@ -23,6 +24,7 @@ const DARK_SLUGS = new Set([
   "x",
   "socketdotio",
   "flask",
+  "mysql",
 ]);
 
 // 17 tecnologías del stack real del usuario
@@ -36,7 +38,7 @@ const orbit1: TechItem[] = [
 const orbit2: TechItem[] = [
   { slug: "python", name: "Python" },
   { slug: "nodedotjs", name: "Node.js" },
-  { slug: "openjdk", name: "Java", color: "ED8B00" }, // Icono oficial de Java (OpenJDK) con color naranja característico
+  { slug: "java", name: "Java" }, // Corregido: slug oficial 'java' para la taza de café
   { slug: "springboot", name: "Spring Boot" },
   { slug: "php", name: "PHP" },
   { slug: "codeigniter", name: "CodeIgniter" },
@@ -48,7 +50,12 @@ const orbit3: TechItem[] = [
   { slug: "cplusplus", name: "C++" },
   { slug: "arduino", name: "Arduino" },
   { slug: "postgresql", name: "PostgreSQL" },
-  { slug: "mysql", name: "MySQL" },
+  {
+    slug: "mysql",
+    name: "MySQL",
+    color: "00B4D8", // Inyectado color cian/azul brillante de alto contraste
+    isDark: true, // Fondo circular claro y drop-shadow para igualar la visibilidad de Angular
+  },
   { slug: "mongodb", name: "MongoDB" },
 ];
 
@@ -83,9 +90,12 @@ export function OrbitingLogos() {
       const x = radius * Math.cos(rad);
       const y = radius * Math.sin(rad);
 
+      const isMySQL = item.slug === "mysql";
+
       // Determinar si el ícono es naturalmente oscuro o requiere tratamiento de alto contraste
       const isDark =
         Boolean(item.isDark) ||
+        isMySQL ||
         DARK_SLUGS.has(item.slug) ||
         item.color?.toLowerCase() === "white" ||
         item.color?.toLowerCase() === "ffffff";
@@ -113,19 +123,27 @@ export function OrbitingLogos() {
           >
             <div
               className={`group relative flex h-9 w-9 items-center justify-center rounded-full border p-1.5 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-125 cursor-pointer ${
-                isDark
+                isMySQL
+                  ? "border-cyan-400/60 bg-gray-900/95 shadow-cyan-400/25 hover:border-cyan-300 hover:shadow-cyan-400/50"
+                  : isDark
                   ? "border-white/40 bg-gray-900/95 shadow-white/10 hover:border-white hover:shadow-white/30"
                   : "border-cyan-500/30 bg-gray-900/90 shadow-black/60 hover:border-cyan-400 hover:bg-gray-800 hover:shadow-cyan-500/40"
               }`}
               title={item.name}
             >
-              {/* Fondo circular blanco semitransparente para íconos naturalmente oscuros */}
+              {/* Fondo circular blanco semitransparente para íconos naturalmente oscuros como MySQL o Next.js */}
               {isDark && (
-                <div className="absolute inset-1 rounded-full bg-white/15 pointer-events-none" />
+                <div
+                  className={`absolute inset-1 rounded-full pointer-events-none ${
+                    isMySQL ? "bg-white/20" : "bg-white/15"
+                  }`}
+                />
               )}
 
-              {failedIcons[item.slug] && item.name === "Java" ? (
+              {failedIcons[item.slug] && (item.slug === "java" || item.name === "Java") ? (
                 <FaJava className="relative z-10 h-5 w-5 text-[#ED8B00]" />
+              ) : failedIcons[item.slug] && isMySQL ? (
+                <SiMysql className="relative z-10 h-5 w-5 text-[#00B4D8]" />
               ) : (
                 <Image
                   src={iconUrl}
@@ -133,7 +151,9 @@ export function OrbitingLogos() {
                   width={20}
                   height={20}
                   className={`relative z-10 h-5 w-5 object-contain pointer-events-none transition-all ${
-                    isDark
+                    isMySQL
+                      ? "filter drop-shadow-[0_0_3px_rgba(255,255,255,0.9)]"
+                      : isDark
                       ? "filter drop-shadow-[0_0_2px_rgba(255,255,255,0.7)]"
                       : ""
                   }`}
