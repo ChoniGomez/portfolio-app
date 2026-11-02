@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
+import { FaJava } from "react-icons/fa";
 import { useIDEWindow } from "@/contexts/IDEWindowContext";
 
 interface TechItem {
@@ -9,7 +10,7 @@ interface TechItem {
   name: string;
 }
 
-// 17 exact technologies requested by the user
+// 17 tecnologías del stack real del usuario
 const orbit1: TechItem[] = [
   { slug: "react", name: "React" },
   { slug: "nextdotjs", name: "Next.js" },
@@ -20,7 +21,7 @@ const orbit1: TechItem[] = [
 const orbit2: TechItem[] = [
   { slug: "python", name: "Python" },
   { slug: "nodedotjs", name: "Node.js" },
-  { slug: "java", name: "Java" },
+  { slug: "openjdk", name: "Java" }, // Corregido: simple-icons utiliza el slug 'openjdk' para Java
   { slug: "springboot", name: "Spring Boot" },
   { slug: "php", name: "PHP" },
   { slug: "codeigniter", name: "CodeIgniter" },
@@ -38,8 +39,9 @@ const orbit3: TechItem[] = [
 
 export function OrbitingLogos() {
   const { windowSize } = useIDEWindow();
+  const [failedIcons, setFailedIcons] = useState<Record<string, boolean>>({});
 
-  // Responsive scaling to fit perfectly inside the IDE content panel
+  // Escalado responsivo según el ancho de la ventana del IDE
   const scale = useMemo(() => {
     if (!windowSize?.width) return 1;
     if (windowSize.width >= 1400) return 1;
@@ -48,7 +50,7 @@ export function OrbitingLogos() {
     return Math.max(0.68, (windowSize.width - 40) / 480);
   }, [windowSize]);
 
-  // Orbit radiuses in pixels
+  // Radios de las tres órbitas en píxeles
   const r1 = 96;
   const r2 = 150;
   const r3 = 208;
@@ -62,7 +64,7 @@ export function OrbitingLogos() {
     return items.map((item, index) => {
       const angle = (index * 360) / total;
       const rad = (angle * Math.PI) / 180;
-      // Coordinates relative to center of the ring
+      // Coordenadas relativas al centro del contenedor de la órbita
       const x = radius * Math.cos(rad);
       const y = radius * Math.sin(rad);
 
@@ -76,21 +78,31 @@ export function OrbitingLogos() {
             transform: "translate(-50%, -50%)",
           }}
         >
-          {/* Counter-rotation container keeps icon upright */}
-          <div className={`${counterClass} transition-transform duration-200 hover:scale-125`}>
+          {/* Contenedor individual con contra-rotación que anula la rotación del padre para mantener orientación fija */}
+          <div
+            className={`flex items-center justify-center ${counterClass}`}
+            style={{ transformOrigin: "center center" }}
+          >
             <div
-              className="group relative flex h-9 w-9 items-center justify-center rounded-full border border-cyan-500/30 bg-gray-900/90 p-1.5 shadow-lg shadow-black/60 backdrop-blur-sm transition-all duration-200 hover:border-cyan-400 hover:bg-gray-800 hover:shadow-cyan-500/40"
+              className="group relative flex h-9 w-9 items-center justify-center rounded-full border border-cyan-500/30 bg-gray-900/90 p-1.5 shadow-lg shadow-black/60 backdrop-blur-sm transition-all duration-200 hover:scale-125 hover:border-cyan-400 hover:bg-gray-800 hover:shadow-cyan-500/40 cursor-pointer"
               title={item.name}
             >
-              <Image
-                src={`https://cdn.simpleicons.org/${item.slug}`}
-                alt={item.name}
-                width={20}
-                height={20}
-                className="h-5 w-5 object-contain"
-                unoptimized
-              />
-              {/* Tooltip badge on hover */}
+              {failedIcons[item.slug] && item.name === "Java" ? (
+                <FaJava className="h-5 w-5 text-[#ED8B00]" />
+              ) : (
+                <Image
+                  src={`https://cdn.simpleicons.org/${item.slug}`}
+                  alt={item.name}
+                  width={20}
+                  height={20}
+                  className="h-5 w-5 object-contain pointer-events-none"
+                  unoptimized
+                  onError={() =>
+                    setFailedIcons((prev) => ({ ...prev, [item.slug]: true }))
+                  }
+                />
+              )}
+              {/* Tooltip con nombre de la tecnología */}
               <span className="pointer-events-none absolute -bottom-6 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded border border-gray-700 bg-gray-900/95 px-1.5 py-0.5 text-[10px] font-medium text-cyan-300 opacity-0 shadow transition-opacity duration-150 group-hover:opacity-100">
                 {item.name}
               </span>
@@ -113,8 +125,8 @@ export function OrbitingLogos() {
         transformOrigin: "center center",
       }}
     >
-      <style jsx>{`
-        @keyframes orbit-rotate-cw {
+      <style>{`
+        @keyframes orbit-cw {
           from {
             transform: rotate(0deg);
           }
@@ -122,7 +134,7 @@ export function OrbitingLogos() {
             transform: rotate(360deg);
           }
         }
-        @keyframes orbit-rotate-ccw {
+        @keyframes orbit-ccw {
           from {
             transform: rotate(0deg);
           }
@@ -132,24 +144,24 @@ export function OrbitingLogos() {
         }
 
         .animate-ring-1 {
-          animation: orbit-rotate-cw 24s linear infinite;
+          animation: orbit-cw 24s linear infinite;
         }
         .counter-ring-1 {
-          animation: orbit-rotate-ccw 24s linear infinite;
+          animation: orbit-ccw 24s linear infinite;
         }
 
         .animate-ring-2 {
-          animation: orbit-rotate-ccw 36s linear infinite;
+          animation: orbit-ccw 36s linear infinite;
         }
         .counter-ring-2 {
-          animation: orbit-rotate-cw 36s linear infinite;
+          animation: orbit-cw 36s linear infinite;
         }
 
         .animate-ring-3 {
-          animation: orbit-rotate-cw 50s linear infinite;
+          animation: orbit-cw 50s linear infinite;
         }
         .counter-ring-3 {
-          animation: orbit-rotate-ccw 50s linear infinite;
+          animation: orbit-ccw 50s linear infinite;
         }
 
         .orbit-system:hover .animate-ring-1,
@@ -162,81 +174,99 @@ export function OrbitingLogos() {
         }
       `}</style>
 
-      {/* Ambient background glow */}
+      {/* Halo ambiental de fondo */}
       <div className="pointer-events-none absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-500/10 via-purple-500/10 to-blue-500/10 blur-3xl" />
 
-      {/* Track Ring 3 (Outer) */}
+      {/* Pista de Órbita 3 (Exterior) */}
       <div
         className="pointer-events-none absolute rounded-full border border-dashed border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.06)]"
         style={{
           width: `${r3 * 2}px`,
           height: `${r3 * 2}px`,
+          top: `calc(50% - ${r3}px)`,
+          left: `calc(50% - ${r3}px)`,
         }}
       />
-      {/* Rotating Ring 3 container */}
+      {/* Contenedor rotatorio Órbita 3 */}
       <div
         className="animate-ring-3 absolute"
         style={{
           width: `${r3 * 2}px`,
           height: `${r3 * 2}px`,
+          top: `calc(50% - ${r3}px)`,
+          left: `calc(50% - ${r3}px)`,
+          transformOrigin: "center center",
         }}
       >
         {renderOrbitItems(orbit3, r3, "counter-ring-3")}
       </div>
 
-      {/* Track Ring 2 (Middle) */}
+      {/* Pista de Órbita 2 (Media) */}
       <div
         className="pointer-events-none absolute rounded-full border border-purple-500/25 shadow-[0_0_15px_rgba(168,85,247,0.08)]"
         style={{
           width: `${r2 * 2}px`,
           height: `${r2 * 2}px`,
+          top: `calc(50% - ${r2}px)`,
+          left: `calc(50% - ${r2}px)`,
         }}
       />
-      {/* Rotating Ring 2 container */}
+      {/* Contenedor rotatorio Órbita 2 */}
       <div
         className="animate-ring-2 absolute"
         style={{
           width: `${r2 * 2}px`,
           height: `${r2 * 2}px`,
+          top: `calc(50% - ${r2}px)`,
+          left: `calc(50% - ${r2}px)`,
+          transformOrigin: "center center",
         }}
       >
         {renderOrbitItems(orbit2, r2, "counter-ring-2")}
       </div>
 
-      {/* Track Ring 1 (Inner) */}
+      {/* Pista de Órbita 1 (Interior) */}
       <div
         className="pointer-events-none absolute rounded-full border border-dashed border-cyan-400/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]"
         style={{
           width: `${r1 * 2}px`,
           height: `${r1 * 2}px`,
+          top: `calc(50% - ${r1}px)`,
+          left: `calc(50% - ${r1}px)`,
         }}
       />
-      {/* Rotating Ring 1 container */}
+      {/* Contenedor rotatorio Órbita 1 */}
       <div
         className="animate-ring-1 absolute"
         style={{
           width: `${r1 * 2}px`,
           height: `${r1 * 2}px`,
+          top: `calc(50% - ${r1}px)`,
+          left: `calc(50% - ${r1}px)`,
+          transformOrigin: "center center",
         }}
       >
         {renderOrbitItems(orbit1, r1, "counter-ring-1")}
       </div>
 
-      {/* Central Cyber Planet / Workstation PC Core */}
+      {/* Planeta / Núcleo de Estación Central (PC Core) */}
       <div className="relative z-10 flex flex-col items-center justify-center">
-        {/* Pulsing Aura Rings */}
+        {/* Auras pulsantes */}
         <div className="absolute -inset-4 rounded-full bg-cyan-500/20 blur-xl animate-pulse" />
         <div
           className="absolute -inset-7 rounded-full bg-purple-500/15 blur-2xl animate-pulse"
           style={{ animationDelay: "1s" }}
         />
 
-        {/* Core Sphere / Workstation PC */}
+        {/* Esfera central del núcleo */}
         <div className="relative flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-cyan-400/50 bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 p-2 shadow-2xl shadow-cyan-500/30 transition-transform duration-300 hover:scale-110">
-          {/* Subtle spinning glow ring */}
-          <div className="absolute inset-0 rounded-full border border-cyan-300/30 animate-spin" style={{ animationDuration: "12s" }} />
+          {/* Anillo fino giratorio */}
+          <div
+            className="absolute inset-0 rounded-full border border-cyan-300/30 animate-spin"
+            style={{ animationDuration: "12s" }}
+          />
 
-          {/* Glowing Workstation / PC Terminal Icon */}
+          {/* Icono de Estación / PC con código */}
           <svg
             className="h-8 w-8 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]"
             viewBox="0 0 24 24"
@@ -248,16 +278,16 @@ export function OrbitingLogos() {
           >
             {/* Monitor */}
             <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-            {/* Code Brackets on Screen */}
+            {/* Código en pantalla */}
             <polyline points="8 9 6 11 8 13" stroke="#38bdf8" />
             <polyline points="16 9 18 11 16 13" stroke="#38bdf8" />
             <line x1="12" y1="8" x2="12" y2="14" stroke="#c084fc" />
-            {/* Stand */}
+            {/* Base / Soporte */}
             <line x1="8" y1="21" x2="16" y2="21" />
             <line x1="12" y1="17" x2="12" y2="21" />
           </svg>
 
-          {/* Micro Status Chip */}
+          {/* Etiqueta del Core */}
           <span className="mt-1 font-mono text-[9px] font-bold tracking-wider text-cyan-300">
             PC CORE
           </span>

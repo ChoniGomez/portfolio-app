@@ -95,3 +95,52 @@ pre[class*="language-"] {
 [data-ide-window] {
   container-type: inline-size;
 }
+
+/* Orbital system animations & counter-rotations */
+@keyframes orbit-cw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-ccw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-ring-1 {
+  animation: orbit-cw 24s linear infinite;
+}
+.counter-ring-1 {
+  animation: orbit-ccw 24s linear infinite;
+}
+
+.animate-ring-2 {
+  animation: orbit-ccw 36s linear infinite;
+}
+.counter-ring-2 {
+  animation: orbit-cw 36s linear infinite;
+}
+
+.animate-ring-3 {
+  animation: orbit-cw 50s linear infinite;
+}
+.counter-ring-3 {
+  animation: orbit-ccw 50s linear infinite;
+}
+
+.orbit-system:hover .animate-ring-1,
+.orbit-system:hover .counter-ring-1,
+.orbit-system:hover .animate-ring-2,
+.orbit-system:hover .counter-ring-2,
+.orbit-system:hover .animate-ring-3,
+.orbit-system:hover .counter-ring-3 {
+  animation-play-state: paused;
+}
