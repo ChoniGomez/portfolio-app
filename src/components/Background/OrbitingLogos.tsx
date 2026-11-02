@@ -38,7 +38,7 @@ const orbit1: TechItem[] = [
 const orbit2: TechItem[] = [
   { slug: "python", name: "Python" },
   { slug: "nodedotjs", name: "Node.js" },
-  { slug: "java", name: "Java" }, // Corregido: slug oficial 'java' para la taza de café
+  { slug: "java", name: "Java" }, // Logo oficial de la taza de café
   { slug: "springboot", name: "Spring Boot" },
   { slug: "php", name: "PHP" },
   { slug: "codeigniter", name: "CodeIgniter" },
@@ -63,19 +63,21 @@ export function OrbitingLogos() {
   const { windowSize } = useIDEWindow();
   const [failedIcons, setFailedIcons] = useState<Record<string, boolean>>({});
 
-  // Escalado responsivo según el ancho de la ventana del IDE
+  // Escalado responsivo dinámico adaptado al nuevo tamaño ampliado (base 600px)
   const scale = useMemo(() => {
     if (!windowSize?.width) return 1;
+    if (windowSize.width >= 1600) return 1.05;
     if (windowSize.width >= 1400) return 1;
-    if (windowSize.width >= 1024) return 0.9;
-    if (windowSize.width >= 768) return 0.82;
-    return Math.max(0.68, (windowSize.width - 40) / 480);
+    if (windowSize.width >= 1200) return 0.92;
+    if (windowSize.width >= 1024) return 0.85;
+    if (windowSize.width >= 768) return 0.78;
+    return Math.max(0.55, (windowSize.width - 40) / 600);
   }, [windowSize]);
 
-  // Radios de las tres órbitas en píxeles
-  const r1 = 96;
-  const r2 = 150;
-  const r3 = 208;
+  // Radios ampliados de las tres órbitas en píxeles para aprovechar todo el espacio disponible
+  const r1 = 125;
+  const r2 = 195;
+  const r3 = 265;
 
   const renderOrbitItems = (
     items: TechItem[],
@@ -121,40 +123,41 @@ export function OrbitingLogos() {
             className={`flex items-center justify-center ${counterClass}`}
             style={{ transformOrigin: "center center" }}
           >
+            {/* Insignia escalada a h-12 w-12 (48px) para máxima legibilidad */}
             <div
-              className={`group relative flex h-9 w-9 items-center justify-center rounded-full border p-1.5 shadow-lg backdrop-blur-sm transition-all duration-200 hover:scale-125 cursor-pointer ${
+              className={`group relative flex h-12 w-12 items-center justify-center rounded-full border p-2 shadow-xl backdrop-blur-sm transition-all duration-200 hover:scale-125 cursor-pointer ${
                 isMySQL
-                  ? "border-cyan-400/60 bg-gray-900/95 shadow-cyan-400/25 hover:border-cyan-300 hover:shadow-cyan-400/50"
+                  ? "border-cyan-400/70 bg-gray-900/95 shadow-cyan-400/30 hover:border-cyan-300 hover:shadow-cyan-400/60"
                   : isDark
-                  ? "border-white/40 bg-gray-900/95 shadow-white/10 hover:border-white hover:shadow-white/30"
-                  : "border-cyan-500/30 bg-gray-900/90 shadow-black/60 hover:border-cyan-400 hover:bg-gray-800 hover:shadow-cyan-500/40"
+                  ? "border-white/50 bg-gray-900/95 shadow-white/15 hover:border-white hover:shadow-white/40"
+                  : "border-cyan-500/40 bg-gray-900/90 shadow-black/70 hover:border-cyan-400 hover:bg-gray-800 hover:shadow-cyan-500/50"
               }`}
               title={item.name}
             >
               {/* Fondo circular blanco semitransparente para íconos naturalmente oscuros como MySQL o Next.js */}
               {isDark && (
                 <div
-                  className={`absolute inset-1 rounded-full pointer-events-none ${
+                  className={`absolute inset-1.5 rounded-full pointer-events-none ${
                     isMySQL ? "bg-white/20" : "bg-white/15"
                   }`}
                 />
               )}
 
               {failedIcons[item.slug] && (item.slug === "java" || item.name === "Java") ? (
-                <FaJava className="relative z-10 h-5 w-5 text-[#ED8B00]" />
+                <FaJava className="relative z-10 h-7 w-7 text-[#ED8B00]" />
               ) : failedIcons[item.slug] && isMySQL ? (
-                <SiMysql className="relative z-10 h-5 w-5 text-[#00B4D8]" />
+                <SiMysql className="relative z-10 h-7 w-7 text-[#00B4D8]" />
               ) : (
                 <Image
                   src={iconUrl}
                   alt={item.name}
-                  width={20}
-                  height={20}
-                  className={`relative z-10 h-5 w-5 object-contain pointer-events-none transition-all ${
+                  width={28}
+                  height={28}
+                  className={`relative z-10 h-7 w-7 object-contain pointer-events-none transition-all ${
                     isMySQL
-                      ? "filter drop-shadow-[0_0_3px_rgba(255,255,255,0.9)]"
+                      ? "filter drop-shadow-[0_0_4px_rgba(255,255,255,0.9)]"
                       : isDark
-                      ? "filter drop-shadow-[0_0_2px_rgba(255,255,255,0.7)]"
+                      ? "filter drop-shadow-[0_0_3px_rgba(255,255,255,0.7)]"
                       : ""
                   }`}
                   unoptimized
@@ -165,7 +168,7 @@ export function OrbitingLogos() {
               )}
 
               {/* Tooltip con nombre de la tecnología */}
-              <span className="pointer-events-none absolute -bottom-6 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded border border-gray-700 bg-gray-900/95 px-1.5 py-0.5 text-[10px] font-medium text-cyan-300 opacity-0 shadow transition-opacity duration-150 group-hover:opacity-100">
+              <span className="pointer-events-none absolute -bottom-7 left-1/2 z-30 -translate-x-1/2 whitespace-nowrap rounded border border-gray-700 bg-gray-900/95 px-2 py-0.5 text-[11px] font-semibold text-cyan-300 opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
                 {item.name}
               </span>
             </div>
@@ -179,8 +182,8 @@ export function OrbitingLogos() {
     <div
       className="orbit-system relative flex items-center justify-center select-none"
       style={{
-        width: "480px",
-        height: "480px",
+        width: "600px",
+        height: "600px",
         maxWidth: "100%",
         maxHeight: "100%",
         transform: `scale(${scale})`,
@@ -241,7 +244,7 @@ export function OrbitingLogos() {
 
       {/* Pista de Órbita 3 (Exterior) */}
       <div
-        className="pointer-events-none absolute rounded-full border border-dashed border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.06)]"
+        className="pointer-events-none absolute rounded-full border border-dashed border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.08)]"
         style={{
           width: `${r3 * 2}px`,
           height: `${r3 * 2}px`,
@@ -265,7 +268,7 @@ export function OrbitingLogos() {
 
       {/* Pista de Órbita 2 (Media) */}
       <div
-        className="pointer-events-none absolute rounded-full border border-purple-500/25 shadow-[0_0_15px_rgba(168,85,247,0.08)]"
+        className="pointer-events-none absolute rounded-full border border-purple-500/25 shadow-[0_0_20px_rgba(168,85,247,0.1)]"
         style={{
           width: `${r2 * 2}px`,
           height: `${r2 * 2}px`,
@@ -289,7 +292,7 @@ export function OrbitingLogos() {
 
       {/* Pista de Órbita 1 (Interior) */}
       <div
-        className="pointer-events-none absolute rounded-full border border-dashed border-cyan-400/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]"
+        className="pointer-events-none absolute rounded-full border border-dashed border-cyan-400/30 shadow-[0_0_20px_rgba(6,182,212,0.12)]"
         style={{
           width: `${r1 * 2}px`,
           height: `${r1 * 2}px`,
@@ -311,17 +314,17 @@ export function OrbitingLogos() {
         {renderOrbitItems(orbit1, r1, "counter-ring-1")}
       </div>
 
-      {/* Planeta / Núcleo de Estación Central (PC Core) */}
+      {/* Planeta / Núcleo de Estación Central (PC Core) ampliado a h-24 w-24 */}
       <div className="relative z-10 flex flex-col items-center justify-center">
-        {/* Auras pulsantes */}
-        <div className="absolute -inset-4 rounded-full bg-cyan-500/20 blur-xl animate-pulse" />
+        {/* Auras pulsantes ampliadas */}
+        <div className="absolute -inset-5 rounded-full bg-cyan-500/25 blur-xl animate-pulse" />
         <div
-          className="absolute -inset-7 rounded-full bg-purple-500/15 blur-2xl animate-pulse"
+          className="absolute -inset-8 rounded-full bg-purple-500/20 blur-2xl animate-pulse"
           style={{ animationDelay: "1s" }}
         />
 
-        {/* Esfera central del núcleo */}
-        <div className="relative flex h-20 w-20 flex-col items-center justify-center rounded-full border-2 border-cyan-400/50 bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 p-2 shadow-2xl shadow-cyan-500/30 transition-transform duration-300 hover:scale-110">
+        {/* Esfera central del núcleo (96px x 96px) */}
+        <div className="relative flex h-24 w-24 flex-col items-center justify-center rounded-full border-2 border-cyan-400/50 bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 p-2 shadow-2xl shadow-cyan-500/35 transition-transform duration-300 hover:scale-110">
           {/* Anillo fino giratorio */}
           <div
             className="absolute inset-0 rounded-full border border-cyan-300/30 animate-spin"
@@ -330,7 +333,7 @@ export function OrbitingLogos() {
 
           {/* Icono de Estación / PC con código */}
           <svg
-            className="h-8 w-8 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+            className="h-10 w-10 text-cyan-400 drop-shadow-[0_0_10px_rgba(6,182,212,0.85)]"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -350,7 +353,7 @@ export function OrbitingLogos() {
           </svg>
 
           {/* Etiqueta del Core */}
-          <span className="mt-1 font-mono text-[9px] font-bold tracking-wider text-cyan-300">
+          <span className="mt-1 font-mono text-[10px] font-bold tracking-widest text-cyan-300">
             PC CORE
           </span>
         </div>

@@ -30,7 +30,7 @@ function HomePageContent() {
           <HomeContent />
         </div>
         <div className={`flex-shrink-0 flex items-center justify-center ${
-          isLargeWindow ? 'flex-1 max-w-lg' : 'w-full max-w-md'
+          isLargeWindow ? 'flex-1 max-w-2xl' : 'w-full max-w-xl'
         }`}>
           <OrbitingLogosPositioned />
         </div>
