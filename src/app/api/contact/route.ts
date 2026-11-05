@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     let name = "";
     let email = "";
     let message = "";
+    let website = "";
 
     const contentType = req.headers.get("content-type") || "";
 
@@ -19,11 +20,20 @@ export async function POST(req: NextRequest) {
       name = body.name;
       email = body.email;
       message = body.message;
+      website = body.website || "";
     } else {
       const formData = await req.formData();
       name = (formData.get("name") as string) || "";
       email = (formData.get("email") as string) || "";
       message = (formData.get("message") as string) || "";
+      website = (formData.get("website") as string) || "";
+    }
+
+    // Validación Honeypot: si el campo señuelo contiene algún valor, es un bot.
+    // Omitimos el envío a Resend pero retornamos status 200 para engañar al atacante.
+    if (website && website.trim() !== "") {
+      console.warn("Honeypot activado: se detectó un bot y se omitió el envío.");
+      return NextResponse.json({ success: true }, { status: 200 });
     }
 
     const validation = contactFormSchema.safeParse({ name, email, message });

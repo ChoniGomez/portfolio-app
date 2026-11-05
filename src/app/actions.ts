@@ -9,6 +9,14 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 type State = { success: boolean } | null;
 
 export async function sendEmail(prevState: State, formData: FormData) {
+  const website = formData.get("website") as string;
+
+  // Honeypot check: si un bot llenó el campo señuelo, retornar éxito sin enviar email
+  if (website && website.trim() !== "") {
+    console.warn("Honeypot activado: se detectó un bot y se omitió el envío.");
+    return { success: true };
+  }
+
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const message = formData.get("message") as string;

@@ -179,6 +179,14 @@ export const createPost = async (formData: FormData) => {
 type EmailState = { success: boolean } | null;
 
 export async function sendEmail(prevState: EmailState, formData: FormData) {
+  const website = formData.get("website") as string;
+
+  // Honeypot check: si un bot llenó el campo señuelo, retornar éxito sin enviar email
+  if (website && website.trim() !== "") {
+    console.warn("Honeypot activado: se detectó un bot y se omitió el envío.");
+    return { success: true };
+  }
+
   const rawFormData = {
     name: formData.get("name"),
     email: formData.get("email"),

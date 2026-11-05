@@ -54,6 +54,22 @@ export function ContactForm() {
 
   return (
     <form action={formAction} className="space-y-4">
+      {/* Campo Honeypot oculto para detectar bots */}
+      <div
+        className="opacity-0 absolute -z-50 pointer-events-none select-none h-0 w-0 overflow-hidden"
+        aria-hidden="true"
+        tabIndex={-1}
+      >
+        <label htmlFor="website">Website</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div>
         <label
           htmlFor="name"

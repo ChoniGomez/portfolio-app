@@ -14,6 +14,7 @@ export const contactFormSchema = z.object({
     .string()
     .min(1, "El mensaje no puede estar vacío")
     .max(1000, "El mensaje no puede superar los 1000 caracteres"),
+  website: z.string().optional(),
 });
 
 export type ContactFormData = z.infer<typeof contactFormSchema>;
