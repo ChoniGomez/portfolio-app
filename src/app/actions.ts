@@ -17,12 +17,10 @@ export async function sendEmail(prevState: State, formData: FormData) {
     throw new Error("Por favor completa todos los campos.");
   }
 
-  const recipientEmail = "ing.gomezjonathan@gmail.com";
-
   try {
     const { error } = await resend.emails.send({
       from: "onboarding@resend.dev",
-      to: [recipientEmail],
+      to: "ing.gomezjonathan@gmail.com",
       subject: `[Portfolio Contact] - ${name}`,
       replyTo: email,
       react: createElement(ContactTemplate, { name, email, message }),
