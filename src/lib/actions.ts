@@ -195,14 +195,13 @@ export async function sendEmail(prevState: EmailState, formData: FormData) {
   }
 
   const validatedData = result.data;
-  const recipientEmail =
-    process.env.CONTACT_EMAIL || "ing.gomezjonathan@gmail.com";
+  const recipientEmail = "ing.gomezjonathan@gmail.com";
 
   try {
     await resend.emails.send({
       from: "Portfolio Contact Form <onboarding@resend.dev>",
       to: [recipientEmail],
-      subject: `${validatedData.name} se ha puesto en contacto desde el Portfolio`,
+      subject: `[Portfolio Contact] - ${validatedData.name}`,
       replyTo: validatedData.email,
       react: createElement(ContactTemplate, validatedData),
     });
