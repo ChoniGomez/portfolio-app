@@ -20,7 +20,7 @@ export async function sendEmail(prevState: State, formData: FormData) {
   const recipientEmail = "ing.gomezjonathan@gmail.com";
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: [recipientEmail],
       subject: `[Portfolio Contact] - ${name}`,
