@@ -1,7 +1,7 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import { useActionState, useState, useRef } from "react";
+import { useActionState, useState, useRef, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -21,7 +21,23 @@ function SubmitButton({ isCaptchaVerified }: { isCaptchaVerified: boolean }) {
 
 export function ContactForm() {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
+
+  // Asegurar que el componente solo se monte en el cliente para evitar mismatch de hidratación y loops
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Callbacks memoizados con referencia estable para evitar que react-google-recaptcha
+  // detecte nuevas funciones en cada render y dispare un bucle infinito de re-renderizado
+  const handleCaptchaChange = useCallback((token: string | null) => {
+    setRecaptchaToken(token);
+  }, []);
+
+  const handleCaptchaExpired = useCallback(() => {
+    setRecaptchaToken(null);
+  }, []);
 
   const [, formAction] = useActionState(
     async (prevState: { success: boolean } | null, formData: FormData) => {
@@ -47,7 +63,7 @@ export function ContactForm() {
         }
 
         toast.success("¡Mensaje enviado con éxito!");
-        // Reset form
+        // Reset form y widget
         const form = document.querySelector("form") as HTMLFormElement;
         form?.reset();
         recaptchaRef.current?.reset();
@@ -66,6 +82,10 @@ export function ContactForm() {
     },
     null,
   );
+
+  const siteKey =
+    process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+    "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
 
   return (
     <form action={formAction} className="space-y-4">
@@ -123,14 +143,18 @@ export function ContactForm() {
       </div>
 
       {/* Google reCAPTCHA v2 Widget posicionado justo sobre el botón de envío */}
-      <div className="flex justify-center py-2">
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
-          theme="dark"
-          onChange={(token) => setRecaptchaToken(token)}
-          onExpired={() => setRecaptchaToken(null)}
-        />
+      <div className="flex min-h-[78px] items-center justify-center py-2">
+        {isMounted ? (
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={siteKey}
+            theme="dark"
+            onChange={handleCaptchaChange}
+            onExpired={handleCaptchaExpired}
+          />
+        ) : (
+          <div className="h-[78px] w-[304px] animate-pulse rounded bg-gray-700/40" />
+        )}
       </div>
 
       <SubmitButton isCaptchaVerified={Boolean(recaptchaToken)} />
