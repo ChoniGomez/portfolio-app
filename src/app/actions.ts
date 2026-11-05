@@ -9,12 +9,30 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 type State = { success: boolean } | null;
 
 export async function sendEmail(prevState: State, formData: FormData) {
-  const website = formData.get("website") as string;
+  const recaptchaToken = formData.get("recaptchaToken") as string;
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
 
-  // Honeypot check: si un bot llenó el campo señuelo, retornar éxito sin enviar email
-  if (website && website.trim() !== "") {
-    console.warn("Honeypot activado: se detectó un bot y se omitió el envío.");
-    return { success: true };
+  if (secretKey) {
+    if (!recaptchaToken) {
+      throw new Error("Verificación de reCAPTCHA requerida.");
+    }
+
+    const verifyRes = await fetch(
+      "https://www.google.com/recaptcha/api/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `secret=${encodeURIComponent(secretKey)}&response=${encodeURIComponent(recaptchaToken)}`,
+      },
+    );
+
+    const verifyData = await verifyRes.json();
+    if (!verifyData.success) {
+      console.error("Fallo de verificación reCAPTCHA:", verifyData);
+      throw new Error(
+        "La verificación de reCAPTCHA no fue válida. Por favor intenta de nuevo.",
+      );
+    }
   }
 
   const name = formData.get("name") as string;

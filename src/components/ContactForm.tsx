@@ -1,17 +1,18 @@
 "use client";
 
 import { useFormStatus } from "react-dom";
-import { useActionState } from "react";
+import { useActionState, useState, useRef } from "react";
 import { toast } from "sonner";
+import ReCAPTCHA from "react-google-recaptcha";
 
-function SubmitButton() {
+function SubmitButton({ isCaptchaVerified }: { isCaptchaVerified: boolean }) {
   const { pending } = useFormStatus();
 
   return (
     <button
       type="submit"
-      disabled={pending}
-      className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:hover:bg-blue-600 transition-colors"
+      disabled={pending || !isCaptchaVerified}
+      className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:hover:bg-blue-600 transition-colors cursor-pointer disabled:cursor-not-allowed"
     >
       {pending ? "Enviando..." : "Enviar mensaje"}
     </button>
@@ -19,9 +20,19 @@ function SubmitButton() {
 }
 
 export function ContactForm() {
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+
   const [, formAction] = useActionState(
     async (prevState: { success: boolean } | null, formData: FormData) => {
+      if (!recaptchaToken) {
+        toast.error("Por favor completa la verificación de reCAPTCHA.");
+        return null;
+      }
+
       try {
+        formData.append("recaptchaToken", recaptchaToken);
+
         const response = await fetch("/api/contact", {
           method: "POST",
           body: formData,
@@ -39,6 +50,8 @@ export function ContactForm() {
         // Reset form
         const form = document.querySelector("form") as HTMLFormElement;
         form?.reset();
+        recaptchaRef.current?.reset();
+        setRecaptchaToken(null);
         return { success: true };
       } catch (error) {
         toast.error(
@@ -46,6 +59,8 @@ export function ContactForm() {
             ? error.message
             : "Ocurrió un error al enviar el mensaje",
         );
+        recaptchaRef.current?.reset();
+        setRecaptchaToken(null);
         return null;
       }
     },
@@ -54,22 +69,6 @@ export function ContactForm() {
 
   return (
     <form action={formAction} className="space-y-4">
-      {/* Campo Honeypot oculto para detectar bots */}
-      <div
-        className="opacity-0 absolute -z-50 pointer-events-none select-none h-0 w-0 overflow-hidden"
-        aria-hidden="true"
-        tabIndex={-1}
-      >
-        <label htmlFor="website">Website</label>
-        <input
-          type="text"
-          id="website"
-          name="website"
-          tabIndex={-1}
-          autoComplete="off"
-        />
-      </div>
-
       <div>
         <label
           htmlFor="name"
@@ -123,7 +122,18 @@ export function ContactForm() {
         />
       </div>
 
-      <SubmitButton />
+      {/* Google reCAPTCHA v2 Widget posicionado justo sobre el botón de envío */}
+      <div className="flex justify-center py-2">
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+          theme="dark"
+          onChange={(token) => setRecaptchaToken(token)}
+          onExpired={() => setRecaptchaToken(null)}
+        />
+      </div>
+
+      <SubmitButton isCaptchaVerified={Boolean(recaptchaToken)} />
     </form>
   );
 }
