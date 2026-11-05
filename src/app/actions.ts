@@ -20,16 +20,24 @@ export async function sendEmail(prevState: State, formData: FormData) {
   const recipientEmail = "ing.gomezjonathan@gmail.com";
 
   try {
-    await resend.emails.send({
-      from: "Portfolio Contact Form <onboarding@resend.dev>",
+    const { data, error } = await resend.emails.send({
+      from: "onboarding@resend.dev",
       to: [recipientEmail],
       subject: `[Portfolio Contact] - ${name}`,
       replyTo: email,
       react: createElement(ContactTemplate, { name, email, message }),
     });
 
+    if (error) {
+      console.error("Error de Resend:", error);
+      throw new Error(error.message || "Error al enviar correo con Resend");
+    }
+
     return { success: true };
-  } catch {
-    throw new Error("No se pudo enviar el mensaje. Por favor intenta de nuevo.");
+  } catch (error) {
+    console.error("Error de Resend:", error);
+    throw error instanceof Error
+      ? error
+      : new Error("No se pudo enviar el mensaje. Por favor intenta de nuevo.");
   }
 }

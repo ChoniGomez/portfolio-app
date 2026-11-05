@@ -3,7 +3,6 @@
 import { useFormStatus } from "react-dom";
 import { useActionState } from "react";
 import { toast } from "sonner";
-import { sendEmail } from "@/lib/actions";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -23,14 +22,24 @@ export function ContactForm() {
   const [, formAction] = useActionState(
     async (prevState: { success: boolean } | null, formData: FormData) => {
       try {
-        const result = await sendEmail(prevState, formData);
-        if (result?.success) {
-          toast.success("¡Mensaje enviado con éxito!");
-          // Reset form
-          const form = document.querySelector("form") as HTMLFormElement;
-          form?.reset();
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          throw new Error(
+            data?.error || `Error ${response.status}: No se pudo enviar el mensaje`,
+          );
         }
-        return result;
+
+        toast.success("¡Mensaje enviado con éxito!");
+        // Reset form
+        const form = document.querySelector("form") as HTMLFormElement;
+        form?.reset();
+        return { success: true };
       } catch (error) {
         toast.error(
           error instanceof Error
