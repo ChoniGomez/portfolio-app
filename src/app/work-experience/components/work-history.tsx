@@ -13,11 +13,25 @@ interface WorkHistoryItem {
 
 const workHistory: WorkHistoryItem[] = [
   {
-    period: "Actualidad",
-    role: "Desarrollador de Software",
+    period: "Enero 2017 - Actualidad",
+    role: "Desarrollo de Software y Programación de Robots.",
     company: "Escuela de Robótica de Misiones",
     description:
-      "Desarrollo de proyectos tecnológicos, diseño de prototipos robóticos e instrucción en tecnologías de programación.",
+      "Programación de sistemas embebidos en C/C++ y Arduino. Integración IoT con PySerial y Bluetooth. Desarrollo de scripts de visión artificial con Python, OpenCV y YOLO. Diseño de arquitectura algorítmica y traducción de requerimientos mecánicos en código eficiente.",
+  },
+  {
+    period: "Enero 2026 - Actualidad",
+    role: "Consultor de Software / Desarrollador Freelance",
+    company: "CultiShop - Plataforma de E-commerce",
+    description:
+      "Arquitectura y despliegue (DevOps) en VPS DonWeb, Nginx y Docker. Desarrollo Backend RESTful con Node.js y Fastify. Modelado relacional en PostgreSQL. Integración con frontend en React.",
+  },
+  {
+    period: "Enero 2026 - Actualidad",
+    role: "Consultor de Software / Desarrollador Freelance",
+    company: "QueRico! - Plataforma de E-commerce",
+    description:
+      "Arquitectura Full-Stack. Backend con Node.js y Express para control dinámico de stock y promociones. Base de datos PostgreSQL. Integración comercial con WhatsApp. Despliegue cloud continuo en Vercel y Render.",
   },
 ];
 
@@ -39,7 +53,7 @@ const WorkHistory = () => {
       <div className="max-w-4xl mx-auto">
         {workHistory.map((item, index) => (
           <motion.div
-            key={item.role}
+            key={`${item.company}-${index}`}
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -59,7 +73,9 @@ const WorkHistory = () => {
                     <Building2 className="w-4 h-4" />
                     <span>{item.company}</span>
                   </div>
-                  <p className="text-muted-foreground">{item.description}</p>
+                  <p className="text-muted-foreground text-justify hyphens-auto" lang="es">
+                    {item.description}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
                   <CalendarDays className="w-4 h-4" />
