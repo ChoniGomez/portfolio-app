@@ -46,12 +46,12 @@ export function HomeContent() {
         </div>
       </div>
 
-      <p className="text-xl text-slate-400 leading-relaxed">
+      <p className="text-xl text-slate-400 leading-relaxed text-justify hyphens-auto" lang="es">
         Ingeniero en Informática y Full Stack Developer residiendo en Posadas,
         Misiones. Especializado en el desarrollo de aplicaciones web modernas,
         inteligencia artificial, visión por computadora y electrónica integrada.
       </p>
-      <p className="text-lg text-slate-400 leading-relaxed">
+      <p className="text-lg text-slate-400 leading-relaxed text-justify hyphens-auto" lang="es">
         Combino la excelencia técnica con la pasión por la enseñanza para
         construir soluciones de software robustas y formar a la próxima
         generación de desarrolladores. ¡Construyamos algo increíble juntos!

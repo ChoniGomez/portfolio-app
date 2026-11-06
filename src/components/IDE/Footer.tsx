@@ -70,7 +70,7 @@ export function Footer() {
           <SiGithub size={14} />
         </Link>
         <Link
-          href="https://linkedin.com"
+          href="https://www.linkedin.com/in/jonathanmgomez/"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center hover:text-gray-300"

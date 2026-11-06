@@ -25,13 +25,13 @@ const technologies = [
 
 export default function AboutPage() {
   return (
-    <div className="text-gray-300">
+    <div className="text-gray-300" lang="es">
       <div className="grid grid-cols-1 gap-8 p-4 lg:grid-cols-2">
         {/* Text Column */}
         <div className="space-y-6">
           <div>
             <h1 className="mb-4 text-2xl font-bold text-slate-200">Sobre Mí</h1>
-            <p className="text-slate-400">
+            <p className="text-slate-400 text-justify hyphens-auto">
               Hola, soy Jonathan Matias Gomez, Ingeniero en Informática y Full
               Stack Developer residiendo en Posadas, Misiones. Especializado en
               el desarrollo de aplicaciones web modernas, inteligencia
@@ -63,7 +63,7 @@ export default function AboutPage() {
             <h2 className="mb-3 text-xl font-semibold text-slate-200">
               Mi Enfoque
             </h2>
-            <p className="text-slate-400">
+            <p className="text-slate-400 text-justify hyphens-auto">
               Creo firmemente en escribir software limpio, escalable y
               mantenible, integrando hardware y software para resolver desafíos
               del mundo real. La docencia y la creación tecnológica van de la
@@ -75,7 +75,7 @@ export default function AboutPage() {
             <h2 className="mb-3 text-xl font-semibold text-slate-200">
               Conectemos
             </h2>
-            <p className="text-slate-400">
+            <p className="text-slate-400 text-justify hyphens-auto">
               Siempre estoy interesado en nuevas oportunidades, proyectos y
               colaboraciones. ¡Construyamos algo increíble juntos! Puedes
               contactarme a través del formulario o de mis canales de contacto.
