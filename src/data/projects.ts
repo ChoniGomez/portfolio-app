@@ -3,7 +3,8 @@ export interface Project {
   summary: string;
   category: string;
   technology: string;
-  image: string;
+  images: string[];
+  image?: string;
   link: string;
   slug: string;
   publishedDate?: string;
@@ -15,7 +16,11 @@ export const projects: Project[] = [
     summary: "E-commerce integral. Node.js, Fastify, React, PostgreSQL, Docker.",
     category: "Full-Stack",
     technology: "Full-Stack",
-    image: "/images/projects/cultishop.png",
+    images: [
+      "/images/projects/cultishop-front.png",
+      "/images/projects/cultishop-admin.png",
+      "/images/projects/cultishop.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "cultishop",
     publishedDate: "2026",
@@ -25,7 +30,11 @@ export const projects: Project[] = [
     summary: "E-commerce gastronómico en tiempo real. React, Node.js, Express, PostgreSQL, Tailwind.",
     category: "Full-Stack",
     technology: "Full-Stack",
-    image: "/images/projects/querico.png",
+    images: [
+      "/images/projects/querico-front.png",
+      "/images/projects/querico-admin.png",
+      "/images/projects/querico.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "querico",
     publishedDate: "2026",
@@ -35,7 +44,11 @@ export const projects: Project[] = [
     summary: "Sistema de Gestión de Postventa Automotriz. Java, JPA, PostgreSQL.",
     category: "Full-Stack",
     technology: "Full-Stack",
-    image: "/images/projects/guarasoft.png",
+    images: [
+      "/images/projects/guarasoft-front.png",
+      "/images/projects/guarasoft-admin.png",
+      "/images/projects/guarasoft.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "guarasoft",
     publishedDate: "2025",
@@ -45,7 +58,11 @@ export const projects: Project[] = [
     summary: "Plataforma POS y Backend. Java, Spring Boot, MySQL.",
     category: "Full-Stack",
     technology: "Full-Stack",
-    image: "/images/projects/supermercado-sooper.png",
+    images: [
+      "/images/projects/supermercado-sooper-front.png",
+      "/images/projects/supermercado-sooper-admin.png",
+      "/images/projects/supermercado-sooper.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "supermercado-sooper",
     publishedDate: "2025",
@@ -55,7 +72,11 @@ export const projects: Project[] = [
     summary: "Vanilla JS, PHP, MySQL.",
     category: "Full-Stack",
     technology: "Full-Stack",
-    image: "/images/projects/sistema-control-stock.png",
+    images: [
+      "/images/projects/sistema-control-stock-front.png",
+      "/images/projects/sistema-control-stock-admin.png",
+      "/images/projects/sistema-control-stock.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "sistema-control-stock",
     publishedDate: "2024",
@@ -65,7 +86,11 @@ export const projects: Project[] = [
     summary: "AngularJS, Node.js, MongoDB.",
     category: "Full-Stack",
     technology: "Full-Stack",
-    image: "/images/projects/plataforma-fullstack-mean.png",
+    images: [
+      "/images/projects/plataforma-fullstack-mean-front.png",
+      "/images/projects/plataforma-fullstack-mean-admin.png",
+      "/images/projects/plataforma-fullstack-mean.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "plataforma-fullstack-mean",
     publishedDate: "2024",
@@ -75,7 +100,11 @@ export const projects: Project[] = [
     summary: "Algoritmos Genéticos (AG) y Optimización de Colonia de Hormigas (OCH) en Python.",
     category: "IA & Visión",
     technology: "IA & Visión",
-    image: "/images/projects/optimizacion-recursos-tesis.png",
+    images: [
+      "/images/projects/optimizacion-recursos-tesis-front.png",
+      "/images/projects/optimizacion-recursos-tesis-admin.png",
+      "/images/projects/optimizacion-recursos-tesis.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "optimizacion-recursos-tesis",
     publishedDate: "2025",
@@ -85,7 +114,11 @@ export const projects: Project[] = [
     summary: "Detección de objetos y clasificación con Python, OpenCV, YOLO, K-Means++.",
     category: "IA & Visión",
     technology: "IA & Visión",
-    image: "/images/projects/machine-learning-vision-artificial.png",
+    images: [
+      "/images/projects/machine-learning-vision-artificial-front.png",
+      "/images/projects/machine-learning-vision-artificial-admin.png",
+      "/images/projects/machine-learning-vision-artificial.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "machine-learning-vision-artificial",
     publishedDate: "2025",
@@ -95,7 +128,11 @@ export const projects: Project[] = [
     summary: "Desarrollo de lógica de control con C/C++ en Arduino, sincronización IoT (PySerial/Bluetooth) aplicados a prototipos mecánicos y automatización.",
     category: "IoT & Robótica",
     technology: "IoT & Robótica",
-    image: "/images/projects/integracion-hardware-software-embebidos.png",
+    images: [
+      "/images/projects/integracion-hardware-software-embebidos-front.png",
+      "/images/projects/integracion-hardware-software-embebidos-admin.png",
+      "/images/projects/integracion-hardware-software-embebidos.png",
+    ],
     link: "https://github.com/ChoniGomez",
     slug: "integracion-hardware-software-embebidos",
     publishedDate: "2025",

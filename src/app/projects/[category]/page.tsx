@@ -47,7 +47,11 @@ export default async function CategoryPage({ params }: PageProps) {
             hoverTitle={`View ${project.metadata.title}`}
             description={project.metadata.summary}
             tag={project.metadata.technology}
-            image={project.metadata.image || DEFAULT_IMAGE}
+            images={
+              project.metadata.images && project.metadata.images.length > 0
+                ? project.metadata.images
+                : [project.metadata.image || DEFAULT_IMAGE]
+            }
             link={project.metadata.link || "https://github.com/ChoniGomez"}
           />
         ))}

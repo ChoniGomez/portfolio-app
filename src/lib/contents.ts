@@ -5,6 +5,7 @@ export type Metadata = {
   title: string;
   summary: string;
   image?: string;
+  images?: string[];
   link?: string;
   technology?: string;
   publishedDate?: string;
@@ -22,8 +23,26 @@ function parseFrontmatter(fileContent: string) {
     const [key, ...valueArr] = line.split(": ");
     const value = valueArr.join(": ").trim();
     const valueWithoutQuotes = value.replace(/^['"](.*)['"]$/, "$1"); // Remove quotes
-    metadata[key.trim() as keyof Metadata] = valueWithoutQuotes;
+    const trimmedKey = key.trim();
+
+    if (trimmedKey === "images") {
+      try {
+        metadata.images = JSON.parse(value.replace(/'/g, '"'));
+      } catch {
+        metadata.images = valueWithoutQuotes
+          .replace(/^\[|\]$/g, "")
+          .split(",")
+          .map((s) => s.trim().replace(/^['"](.*)['"]$/, "$1"))
+          .filter(Boolean);
+      }
+    } else {
+      metadata[trimmedKey as keyof Metadata] = valueWithoutQuotes as never;
+    }
   });
+
+  if (!metadata.images && metadata.image) {
+    metadata.images = [metadata.image];
+  }
 
   return { metadata: metadata as Metadata, content };
 }
