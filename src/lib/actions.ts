@@ -102,18 +102,17 @@ export async function getGitHubContributions() {
 }
 
 export async function getGitHistory() {
-  const owner = "chonigomez";
-  const repo = "portfolio-app";
+  const username = "ChoniGomez";
 
   try {
     const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/commits`,
+      `https://api.github.com/users/${username}/events/public`,
       {
         headers: {
           ...(process.env.GITHUB_PAT
             ? { Authorization: `Bearer ${process.env.GITHUB_PAT}` }
             : {}),
-          "Content-Type": "application/json",
+          Accept: "application/vnd.github.v3+json",
         },
         next: { revalidate: 300 },
       },
@@ -121,13 +120,50 @@ export async function getGitHistory() {
 
     if (!response.ok) {
       console.warn(
-        `GitHub API responded with status ${response.status} for ${owner}/${repo}`,
+        `GitHub API responded with status ${response.status} for ${username} events`,
       );
       return [];
     }
 
-    const commits = await response.json();
-    return Array.isArray(commits) ? commits : [];
+    const events = await response.json();
+    if (!Array.isArray(events)) return [];
+
+    const pushEvents = events.filter(
+      (e) => e.type === "PushEvent" && Array.isArray(e.payload?.commits),
+    );
+
+    const commits = [];
+    for (const event of pushEvents) {
+      const repoName = event.repo?.name || "ChoniGomez/portfolio-app";
+      const date = event.created_at;
+
+      if (Array.isArray(event.payload?.commits)) {
+        for (const commit of event.payload.commits) {
+          const authorName = commit.author?.name || "Jonathan Gomez";
+          const message = commit.message || "(Sin mensaje)";
+          const commitUrl = `https://github.com/${repoName}/commit/${commit.sha}`;
+
+          commits.push({
+            sha: commit.sha,
+            authorName,
+            message,
+            date,
+            commitUrl,
+            repoName,
+            html_url: commitUrl,
+            commit: {
+              author: {
+                name: authorName,
+                date,
+              },
+              message,
+            },
+          });
+        }
+      }
+    }
+
+    return commits;
   } catch (error) {
     console.error("Error fetching commits:", error);
     return [];
