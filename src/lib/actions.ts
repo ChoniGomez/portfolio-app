@@ -105,16 +105,20 @@ export async function getGitHistory() {
   const username = "ChoniGomez";
 
   try {
+    const headers: Record<string, string> = {
+      Accept: "application/vnd.github.v3+json",
+      "User-Agent": "portfolio-app",
+    };
+
+    if (process.env.GITHUB_PAT) {
+      headers["Authorization"] = `Bearer ${process.env.GITHUB_PAT}`;
+    }
+
     const response = await fetch(
-      `https://api.github.com/users/${username}/events/public`,
+      `https://api.github.com/users/${username}/events`,
       {
-        headers: {
-          ...(process.env.GITHUB_PAT
-            ? { Authorization: `Bearer ${process.env.GITHUB_PAT}` }
-            : {}),
-          Accept: "application/vnd.github.v3+json",
-        },
-        next: { revalidate: 300 },
+        headers,
+        next: { revalidate: 120 },
       },
     );
 
@@ -140,7 +144,7 @@ export async function getGitHistory() {
       if (Array.isArray(event.payload?.commits)) {
         for (const commit of event.payload.commits) {
           const authorName = commit.author?.name || "Jonathan Gomez";
-          const message = commit.message || "(Sin mensaje)";
+          const message = commit.message || "(Sin mensaje de commit)";
           const commitUrl = `https://github.com/${repoName}/commit/${commit.sha}`;
 
           commits.push({

@@ -33,30 +33,6 @@ interface ICellRendererParams {
   value: string;
 }
 
-interface GitHubEventCommit {
-  sha: string;
-  author?: {
-    name?: string;
-    email?: string;
-  };
-  message?: string;
-  distinct?: boolean;
-  url?: string;
-}
-
-interface GitHubEvent {
-  id: string;
-  type: string;
-  repo?: {
-    id?: number;
-    name?: string;
-    url?: string;
-  };
-  payload?: {
-    commits?: GitHubEventCommit[];
-  };
-  created_at: string;
-}
 
 const customTheme = themeQuartz.withPart(colorSchemeDarkBlue).withParams({
   fontFamily:
@@ -80,77 +56,38 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
 
   const fetchPublicEvents = useCallback(async () => {
     try {
-      setIsLoading(true);
+      if (!initialCommits || initialCommits.length === 0) {
+        setIsLoading(true);
+      }
       setError(null);
 
-      const response = await fetch(
-        "https://api.github.com/users/ChoniGomez/events/public",
-        {
-          headers: {
-            Accept: "application/vnd.github.v3+json",
-          },
-        },
-      );
+      const response = await fetch("/api/git-history");
 
       if (!response.ok) {
         throw new Error(
-          `Error en API de GitHub: ${response.status} (${response.statusText || "No se pudo consultar"})`,
+          `Error en API de Git History: ${response.status} (${response.statusText || "No se pudo consultar"})`,
         );
       }
 
-      const events: GitHubEvent[] = await response.json();
+      const data = await response.json();
 
-      if (!Array.isArray(events)) {
-        throw new Error("Formato de respuesta inesperado");
+      if (Array.isArray(data)) {
+        setCommits(data);
+      } else if (data?.error) {
+        throw new Error(data.error);
       }
-
-      // Filtrar los eventos de tipo PushEvent con commits
-      const pushEvents = events.filter(
-        (event) =>
-          event.type === "PushEvent" && Array.isArray(event.payload?.commits),
-      );
-
-      const extractedCommits: GitCommitRow[] = [];
-
-      pushEvents.forEach((event) => {
-        const repoName = event.repo?.name || "ChoniGomez/portfolio-app";
-        const eventDate = event.created_at;
-
-        event.payload?.commits?.forEach((commit) => {
-          const authorName = commit.author?.name || "Jonathan Gomez";
-          const message = commit.message || "(Sin mensaje de commit)";
-          const commitUrl = `https://github.com/${repoName}/commit/${commit.sha}`;
-
-          extractedCommits.push({
-            sha: commit.sha,
-            authorName,
-            message,
-            date: eventDate,
-            commitUrl,
-            repoName,
-            html_url: commitUrl,
-            commit: {
-              author: {
-                name: authorName,
-                date: eventDate,
-              },
-              message,
-            },
-          });
-        });
-      });
-
-      setCommits(extractedCommits);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "No se pudo cargar la actividad reciente de GitHub",
-      );
+      if (!initialCommits || initialCommits.length === 0) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "No se pudo cargar la actividad reciente de GitHub",
+        );
+      }
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [initialCommits]);
 
   useEffect(() => {
     fetchPublicEvents();
