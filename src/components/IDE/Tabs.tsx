@@ -11,7 +11,7 @@ import { VscodeIconsFileTypeLightJson } from "../Icons/VscodeIconsFileTypeLightJ
 import { VscodeIconsFileTypeCss } from "../Icons/VscodeIconsFileTypeCss";
 import { CatppuccinMarkdown } from "../Icons/CatppuccinMarkdown";
 import { VscodeIconsFileTypeDotenv } from "../Icons/VscodeIconsFileTypeDotenv";
-// import { SkillIconsReactDark } from "../Icons/SkillIconsReactDark";
+import { SkillIconsReactDark } from "../Icons/SkillIconsReactDark";
 import { VscodeIconsFileTypeGit } from "../Icons/VscodeIconsFileTypeGit";
 
 const NAVIGATION_ITEMS = [
@@ -33,7 +33,7 @@ const NAVIGATION_ITEMS = [
     path: "/coding-stats",
     icon: VscodeIconsFileTypeDotenv,
   },
-  // { name: "guest-book.tsx", path: "/guest-book", icon: SkillIconsReactDark },
+  { name: "guest-book.tsx", path: "/guest-book", icon: SkillIconsReactDark },
   {
     name: "git-history.git",
     path: "/git-history",

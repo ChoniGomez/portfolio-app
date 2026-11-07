@@ -1,10 +1,11 @@
 import fs from "fs";
 import path from "path";
 
-type Metadata = {
+export type Metadata = {
   title: string;
   summary: string;
   image?: string;
+  link?: string;
   technology?: string;
   publishedDate?: string;
 };

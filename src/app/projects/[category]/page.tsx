@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-const DEFAULT_IMAGE = "/placeholder.jpg";
+const DEFAULT_IMAGE = "/images/projects/placeholder.png";
 
 interface PageProps {
   params: Promise<{
@@ -48,6 +48,7 @@ export default async function CategoryPage({ params }: PageProps) {
             description={project.metadata.summary}
             tag={project.metadata.technology}
             image={project.metadata.image || DEFAULT_IMAGE}
+            link={project.metadata.link || "https://github.com/ChoniGomez"}
           />
         ))}
       </div>
