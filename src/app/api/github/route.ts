@@ -34,13 +34,34 @@ export async function GET() {
       );
     }
 
-    const pushEvents = data.filter((e: { type?: string }) => e.type === 'PushEvent');
-    const eventTypes = [...new Set(data.map((e: { type?: string }) => e.type))];
-    return NextResponse.json({
-      events: pushEvents,
-      debug_total: data.length,
-      debug_types: eventTypes,
-    });
+    interface GitHubCommitItem {
+      sha?: string;
+      author?: { name?: string };
+      message?: string;
+    }
+
+    interface GitHubEvent {
+      type?: string;
+      created_at?: string;
+      repo?: { name?: string };
+      payload?: { commits?: GitHubCommitItem[] };
+    }
+
+    const pushEvents = (data as GitHubEvent[]).filter(
+      (e) => e.type === "PushEvent",
+    );
+    const commits = pushEvents.flatMap((event) =>
+      (event.payload?.commits || []).map((commit) => ({
+        id: commit.sha,
+        hash: commit.sha ? commit.sha.substring(0, 7) : "",
+        author: commit.author?.name || "Jonathan Gomez",
+        message: commit.message || "",
+        date: event.created_at || "",
+        repoName: event.repo?.name || "",
+        url: `https://github.com/${event.repo?.name || ""}/commit/${commit.sha || ""}`,
+      })),
+    );
+    return NextResponse.json({ commits });
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
   }

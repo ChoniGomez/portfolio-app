@@ -15,6 +15,10 @@ export interface GitCommitRow {
   date: string;
   commitUrl: string;
   repoName: string;
+  id?: string;
+  hash?: string;
+  author?: string;
+  url?: string;
   // Campos de compatibilidad con estructuras previas
   commit?: {
     author: {
@@ -93,44 +97,94 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
         created_at: string;
       }
 
-      let pushEvents: GitHubEventItem[] = [];
-      if (Array.isArray(data)) {
-        pushEvents = data.filter((e) => e.type === "PushEvent");
-      } else if (data?.events && Array.isArray(data.events)) {
-        pushEvents = data.events;
-      } else if (data?.error) {
-        throw new Error(data.error);
-      }
+      let extractedCommits: GitCommitRow[] = [];
 
-      const extractedCommits: GitCommitRow[] = [];
+      if (data?.commits && Array.isArray(data.commits)) {
+        interface ApiCommitItem {
+          id?: string;
+          hash?: string;
+          sha?: string;
+          author?: string;
+          authorName?: string;
+          message?: string;
+          date?: string;
+          repoName?: string;
+          url?: string;
+          commitUrl?: string;
+        }
 
-      pushEvents.forEach((event: GitHubEventItem) => {
-        const repoName = event.repo?.name || "ChoniGomez/portfolio-app";
-        const eventDate = event.created_at;
+        extractedCommits = data.commits.map((c: ApiCommitItem) => {
+          const sha = c.id || c.sha || c.hash || "";
+          const authorName = c.author || c.authorName || "Jonathan Gomez";
+          const message = c.message || "(Sin mensaje de commit)";
+          const date = c.date || "";
+          const repoName = c.repoName || "ChoniGomez/portfolio-app";
+          const commitUrl =
+            c.url || c.commitUrl || `https://github.com/${repoName}/commit/${sha}`;
 
-        event.payload?.commits?.forEach((commit) => {
-          const authorName = commit.author?.name || "Jonathan Gomez";
-          const message = commit.message || "(Sin mensaje de commit)";
-          const commitUrl = `https://github.com/${repoName}/commit/${commit.sha}`;
-
-          extractedCommits.push({
-            sha: commit.sha,
+          return {
+            sha,
+            id: sha,
+            hash: c.hash || (sha ? sha.substring(0, 7) : ""),
             authorName,
+            author: authorName,
             message,
-            date: eventDate,
+            date,
             commitUrl,
+            url: commitUrl,
             repoName,
             html_url: commitUrl,
             commit: {
               author: {
                 name: authorName,
-                date: eventDate,
+                date,
               },
               message,
             },
+          };
+        });
+      } else {
+        let pushEvents: GitHubEventItem[] = [];
+        if (Array.isArray(data)) {
+          pushEvents = data.filter((e) => e.type === "PushEvent");
+        } else if (data?.events && Array.isArray(data.events)) {
+          pushEvents = data.events;
+        } else if (data?.error) {
+          throw new Error(data.error);
+        }
+
+        pushEvents.forEach((event: GitHubEventItem) => {
+          const repoName = event.repo?.name || "ChoniGomez/portfolio-app";
+          const eventDate = event.created_at;
+
+          event.payload?.commits?.forEach((commit) => {
+            const authorName = commit.author?.name || "Jonathan Gomez";
+            const message = commit.message || "(Sin mensaje de commit)";
+            const commitUrl = `https://github.com/${repoName}/commit/${commit.sha}`;
+
+            extractedCommits.push({
+              sha: commit.sha,
+              id: commit.sha,
+              hash: commit.sha ? commit.sha.substring(0, 7) : "",
+              authorName,
+              author: authorName,
+              message,
+              date: eventDate,
+              commitUrl,
+              url: commitUrl,
+              repoName,
+              html_url: commitUrl,
+              commit: {
+                author: {
+                  name: authorName,
+                  date: eventDate,
+                },
+                message,
+              },
+            });
           });
         });
-      });
+      }
 
       setCommits(extractedCommits);
     } catch (err) {
@@ -276,7 +330,9 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
     return (
       <div className="flex w-full flex-col items-center justify-center space-y-3 rounded-xl border border-gray-800 bg-gray-900/40 p-8 text-center">
         <p className="font-medium text-gray-300">
-          Historial vacío. Eventos recibidos: {debugTotal}. Tipos detectados: {debugTypes.join(', ')}
+          {debugTotal !== null && debugTypes.length > 0
+            ? `Historial vacío. Eventos recibidos: ${debugTotal}. Tipos detectados: ${debugTypes.join(', ')}`
+            : "No se encontraron commits recientes en GitHub."}
         </p>
         <a
           href="https://github.com/ChoniGomez"
