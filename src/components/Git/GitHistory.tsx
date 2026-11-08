@@ -54,6 +54,7 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
   );
   const [error, setError] = useState<string | null>(null);
   const [debugTotal, setDebugTotal] = useState<number | null>(null);
+  const [debugTypes, setDebugTypes] = useState<string[]>([]);
 
   const fetchPublicEvents = useCallback(async () => {
     try {
@@ -74,6 +75,9 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
 
       if (typeof data?.debug_total === "number") {
         setDebugTotal(data.debug_total);
+      }
+      if (Array.isArray(data?.debug_types)) {
+        setDebugTypes(data.debug_types);
       }
 
       interface GitHubEventCommit {
@@ -272,13 +276,8 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
     return (
       <div className="flex w-full flex-col items-center justify-center space-y-3 rounded-xl border border-gray-800 bg-gray-900/40 p-8 text-center">
         <p className="font-medium text-gray-300">
-          No se encontraron eventos de Push recientes en GitHub.
+          Historial vacío. Eventos recibidos: {debugTotal}. Tipos detectados: {debugTypes.join(', ')}
         </p>
-        {debugTotal !== null && (
-          <p className="font-mono text-xs text-gray-400">
-            (Total de eventos recientes devueltos por la API: {debugTotal})
-          </p>
-        )}
         <a
           href="https://github.com/ChoniGomez"
           target="_blank"
