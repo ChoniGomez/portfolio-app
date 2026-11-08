@@ -143,7 +143,7 @@ export function OrbitingLogos() {
                 />
               )}
 
-              {failedIcons[item.slug] && (item.slug === "java" || item.name === "Java") ? (
+              {item.slug === "java" || item.name === "Java" ? (
                 <FaJava className="relative z-10 h-7 w-7 text-[#ED8B00]" />
               ) : failedIcons[item.slug] && isMySQL ? (
                 <SiMysql className="relative z-10 h-7 w-7 text-[#00B4D8]" />

@@ -53,6 +53,7 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
     !initialCommits || initialCommits.length === 0,
   );
   const [error, setError] = useState<string | null>(null);
+  const [debugTotal, setDebugTotal] = useState<number | null>(null);
 
   const fetchPublicEvents = useCallback(async () => {
     try {
@@ -62,20 +63,72 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
       setError(null);
 
       const response = await fetch("/api/github");
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
+          data?.error ||
           `Error en API de GitHub: ${response.status} (${response.statusText || "No se pudo consultar"})`,
         );
       }
 
-      const data = await response.json();
+      if (typeof data?.debug_total === "number") {
+        setDebugTotal(data.debug_total);
+      }
 
+      interface GitHubEventCommit {
+        sha: string;
+        author?: { name?: string; email?: string };
+        message?: string;
+      }
+      interface GitHubEventItem {
+        id: string;
+        type: string;
+        repo?: { name?: string };
+        payload?: { commits?: GitHubEventCommit[] };
+        created_at: string;
+      }
+
+      let pushEvents: GitHubEventItem[] = [];
       if (Array.isArray(data)) {
-        setCommits(data);
+        pushEvents = data.filter((e) => e.type === "PushEvent");
+      } else if (data?.events && Array.isArray(data.events)) {
+        pushEvents = data.events;
       } else if (data?.error) {
         throw new Error(data.error);
       }
+
+      const extractedCommits: GitCommitRow[] = [];
+
+      pushEvents.forEach((event: GitHubEventItem) => {
+        const repoName = event.repo?.name || "ChoniGomez/portfolio-app";
+        const eventDate = event.created_at;
+
+        event.payload?.commits?.forEach((commit) => {
+          const authorName = commit.author?.name || "Jonathan Gomez";
+          const message = commit.message || "(Sin mensaje de commit)";
+          const commitUrl = `https://github.com/${repoName}/commit/${commit.sha}`;
+
+          extractedCommits.push({
+            sha: commit.sha,
+            authorName,
+            message,
+            date: eventDate,
+            commitUrl,
+            repoName,
+            html_url: commitUrl,
+            commit: {
+              author: {
+                name: authorName,
+                date: eventDate,
+              },
+              message,
+            },
+          });
+        });
+      });
+
+      setCommits(extractedCommits);
     } catch (err) {
       if (!initialCommits || initialCommits.length === 0) {
         setError(
@@ -221,6 +274,11 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
         <p className="font-medium text-gray-300">
           No se encontraron eventos de Push recientes en GitHub.
         </p>
+        {debugTotal !== null && (
+          <p className="font-mono text-xs text-gray-400">
+            (Total de eventos recientes devueltos por la API: {debugTotal})
+          </p>
+        )}
         <a
           href="https://github.com/ChoniGomez"
           target="_blank"
