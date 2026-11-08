@@ -114,6 +114,8 @@ export async function getGitHistory() {
       headers["Authorization"] = `Bearer ${process.env.GITHUB_PAT}`;
     }
 
+    console.log("GitHub Fetching - Token exists:", !!process.env.GITHUB_PAT);
+
     const response = await fetch(
       `https://api.github.com/users/${username}/events`,
       {

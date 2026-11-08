@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 interface GitHubEventCommit {
   sha: string;
@@ -37,6 +37,8 @@ export async function GET() {
     if (process.env.GITHUB_PAT) {
       headers["Authorization"] = `Bearer ${process.env.GITHUB_PAT}`;
     }
+
+    console.log("GitHub Fetching - Token exists:", !!process.env.GITHUB_PAT);
 
     const response = await fetch(
       "https://api.github.com/users/ChoniGomez/events",

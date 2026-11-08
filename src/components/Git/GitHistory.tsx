@@ -214,12 +214,12 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
     );
   }
 
-  // Estado sin commits públicos recientes
+  // Estado sin commits recientes
   if (commits.length === 0) {
     return (
       <div className="flex w-full flex-col items-center justify-center space-y-3 rounded-xl border border-gray-800 bg-gray-900/40 p-8 text-center">
         <p className="font-medium text-gray-300">
-          No se encontraron eventos de Push públicos recientes en GitHub.
+          No se encontraron eventos de Push recientes en GitHub.
         </p>
         <a
           href="https://github.com/ChoniGomez"
