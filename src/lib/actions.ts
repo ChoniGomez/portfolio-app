@@ -118,7 +118,7 @@ export async function getGitHistory() {
       `https://api.github.com/users/${username}/events`,
       {
         headers,
-        next: { revalidate: 120 },
+        cache: "no-store",
       },
     );
 

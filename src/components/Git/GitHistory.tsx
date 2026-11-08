@@ -61,11 +61,11 @@ export function GitHistory({ initialCommits }: GitHistoryProps) {
       }
       setError(null);
 
-      const response = await fetch("/api/git-history");
+      const response = await fetch("/api/github");
 
       if (!response.ok) {
         throw new Error(
-          `Error en API de Git History: ${response.status} (${response.statusText || "No se pudo consultar"})`,
+          `Error en API de GitHub: ${response.status} (${response.statusText || "No se pudo consultar"})`,
         );
       }
 
