@@ -1,66 +1,60 @@
 import { NextResponse } from "next/server";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
+
+interface GitHubSearchCommitItem {
+  sha: string;
+  html_url: string;
+  commit: {
+    author: {
+      name: string;
+      date: string;
+    };
+    message: string;
+  };
+  repository: {
+    name: string;
+  };
+}
 
 export async function GET() {
   try {
-    const res = await fetch('https://api.github.com/users/ChoniGomez/events?per_page=100', {
-      headers: {
-        Authorization: `Bearer ${process.env.GITHUB_PAT}`,
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'portfolio-app'
+    const res = await fetch(
+      "https://api.github.com/search/commits?q=author:ChoniGomez&sort=author-date&order=desc&per_page=15",
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_PAT}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "User-Agent": "portfolio-app",
+        },
+        cache: "no-store",
       },
-      cache: 'no-store'
-    });
+    );
 
     const data = await res.json();
 
     if (!res.ok) {
       return NextResponse.json(
         { error: data.message || "Error en GitHub API" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
-    if (!Array.isArray(data)) {
-      return NextResponse.json(
-        {
-          error:
-            "GitHub no devolvió un array. Respuesta: " +
-            JSON.stringify(data).substring(0, 100),
-        },
-        { status: 500 }
-      );
+    if (!data.items) {
+      return NextResponse.json({ commits: [] });
     }
 
-    interface GitHubCommitItem {
-      sha?: string;
-      author?: { name?: string };
-      message?: string;
-    }
+    const commits = (data.items as GitHubSearchCommitItem[]).map((item) => ({
+      id: item.sha,
+      hash: item.sha ? item.sha.substring(0, 7) : "",
+      author: item.commit?.author?.name || "Jonathan Gomez",
+      message: item.commit?.message || "",
+      date: item.commit?.author?.date || "",
+      repoName: item.repository?.name || "",
+      url: item.html_url,
+    }));
 
-    interface GitHubEvent {
-      type?: string;
-      created_at?: string;
-      repo?: { name?: string };
-      payload?: { commits?: GitHubCommitItem[] };
-    }
-
-    const pushEvents = (data as GitHubEvent[]).filter(
-      (e) => e.type === "PushEvent",
-    );
-    const commits = pushEvents.flatMap((event) =>
-      (event.payload?.commits || []).map((commit) => ({
-        id: commit.sha,
-        hash: commit.sha ? commit.sha.substring(0, 7) : "",
-        author: commit.author?.name || "Jonathan Gomez",
-        message: commit.message || "",
-        date: event.created_at || "",
-        repoName: event.repo?.name || "",
-        url: `https://github.com/${event.repo?.name || ""}/commit/${commit.sha || ""}`,
-      })),
-    );
     return NextResponse.json({ commits });
   } catch (error) {
     return NextResponse.json({ error: String(error) }, { status: 500 });
