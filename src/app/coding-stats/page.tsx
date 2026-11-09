@@ -46,9 +46,9 @@ function GitHubProfileSkeleton() {
 
 function ChartSkeleton() {
   return (
-    <div className="space-y-4 rounded-lg bg-gray-800 p-4">
-      <div className="h-8 w-48 animate-pulse rounded bg-gray-700/50" />
-      <div className="h-[25vh] animate-pulse rounded bg-gray-700/50" />
+    <div className="flex min-h-[360px] w-full flex-col justify-between rounded-lg bg-gray-800 p-4">
+      <div className="mx-auto h-7 w-48 animate-pulse rounded bg-gray-700/50" />
+      <div className="h-[260px] w-full animate-pulse rounded bg-gray-700/50" />
     </div>
   );
 }

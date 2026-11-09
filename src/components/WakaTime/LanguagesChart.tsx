@@ -41,29 +41,30 @@ export default function LanguagesChart({ data }: { data: LanguageData[] }) {
   const sortedData = processedData.sort((a, b) => b.percent - a.percent);
 
   return (
-    <div className="h-[30vh] w-full rounded-lg bg-gray-800">
+    <div className="flex h-full min-h-[360px] w-full flex-col items-center justify-center rounded-lg bg-gray-800 p-4">
       <h2 className="mb-4 text-center text-lg font-medium text-gray-200">
         Lenguajes Utilizados (Últimos 30 Días)
       </h2>
-      <div className="h-[calc(100%-2rem)]">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart margin={{ top: 20, right: 40, bottom: 20, left: 40 }}>
-            <Pie
-              data={sortedData}
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={90}
-              paddingAngle={2}
-              dataKey="percent"
-              nameKey="name"
-              label={({ name, percent }) => `${name} (${percent.toFixed(1)}%)`}
-              labelLine={true}
-            >
-              {sortedData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
+      <div className="flex h-[calc(100%-2rem)] w-full max-w-full items-center justify-center overflow-hidden">
+        <div className="flex h-full w-full max-w-full origin-center items-center justify-center scale-90 sm:scale-95">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart margin={{ top: 15, right: 30, bottom: 15, left: 30 }}>
+              <Pie
+                data={sortedData}
+                cx="50%"
+                cy="50%"
+                innerRadius={50}
+                outerRadius={75}
+                paddingAngle={2}
+                dataKey="percent"
+                nameKey="name"
+                label={({ name, percent }) => `${name} (${percent.toFixed(1)}%)`}
+                labelLine={true}
+              >
+                {sortedData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
             <Tooltip
               contentStyle={{
                 backgroundColor: "#1F2937",
@@ -96,6 +97,7 @@ export default function LanguagesChart({ data }: { data: LanguageData[] }) {
             />
           </PieChart>
         </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

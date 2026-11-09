@@ -18,11 +18,11 @@ interface ChartData {
 
 export default function CodingChart({ data }: { data: ChartData[] }) {
   return (
-    <div className="h-[30vh] w-full rounded-lg bg-gray-800">
+    <div className="flex h-full min-h-[360px] w-full flex-col items-center justify-center rounded-lg bg-gray-800 p-4">
       <h2 className="mb-4 text-center text-lg font-medium text-gray-200">
         Actividad de Programación (Últimos 30 Días)
       </h2>
-      <div className="h-[calc(100%-2rem)]">
+      <div className="h-[calc(100%-2rem)] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
