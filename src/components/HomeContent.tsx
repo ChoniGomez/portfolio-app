@@ -19,7 +19,7 @@ export function HomeContent() {
                 alt="Jonathan Matias Gomez"
                 width={128}
                 height={128}
-                className="h-full w-full rounded-xl object-cover object-[center_65%] scale-125 transition-transform duration-500 group-hover:scale-[1.32]"
+                className="h-full w-full rounded-xl object-cover object-[center_22%] scale-110 transition-transform duration-500 group-hover:scale-115"
                 priority
               />
             </div>
