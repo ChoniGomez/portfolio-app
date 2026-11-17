@@ -14,25 +14,30 @@ interface Props {
   link?: string;
 }
 
+const FALLBACK_IMAGE = "/images/projects/placeholder.png";
+
 export function ModernInnerShadowCardVariant1({
   title,
   hoverTitle,
   description,
   tag = "Project",
   images,
-  image = "/images/projects/placeholder.png",
+  image = FALLBACK_IMAGE,
   link = "https://github.com/ChoniGomez",
 }: Props) {
   // Array de imágenes normalizado
   const imageList = useMemo(() => {
     if (images && images.length > 0) return images;
     if (image) return [image];
-    return ["/images/projects/placeholder.png"];
+    return [FALLBACK_IMAGE];
   }, [images, image]);
 
   // Estado del índice de imagen actual y modal lightbox
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // Registro de errores de carga de imágenes para activar fallback
+  const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
 
   // Funciones cíclicas de navegación en la tarjeta
   const nextImage = (e?: React.MouseEvent) => {
@@ -56,7 +61,8 @@ export function ModernInnerShadowCardVariant1({
     e.stopPropagation();
     setCurrentImageIndex((prev) => {
       const nextIdx = (prev - 1 + imageList.length) % imageList.length;
-      setSelectedImage(imageList[nextIdx]);
+      const targetImg = imageList[nextIdx];
+      setSelectedImage(failedImages[targetImg] ? FALLBACK_IMAGE : targetImg);
       return nextIdx;
     });
   };
@@ -65,7 +71,8 @@ export function ModernInnerShadowCardVariant1({
     e.stopPropagation();
     setCurrentImageIndex((prev) => {
       const nextIdx = (prev + 1) % imageList.length;
-      setSelectedImage(imageList[nextIdx]);
+      const targetImg = imageList[nextIdx];
+      setSelectedImage(failedImages[targetImg] ? FALLBACK_IMAGE : targetImg);
       return nextIdx;
     });
   };
@@ -84,13 +91,15 @@ export function ModernInnerShadowCardVariant1({
       } else if (e.key === "ArrowLeft" && imageList.length > 1) {
         setCurrentImageIndex((prev) => {
           const nextIdx = (prev - 1 + imageList.length) % imageList.length;
-          setSelectedImage(imageList[nextIdx]);
+          const targetImg = imageList[nextIdx];
+          setSelectedImage(failedImages[targetImg] ? FALLBACK_IMAGE : targetImg);
           return nextIdx;
         });
       } else if (e.key === "ArrowRight" && imageList.length > 1) {
         setCurrentImageIndex((prev) => {
           const nextIdx = (prev + 1) % imageList.length;
-          setSelectedImage(imageList[nextIdx]);
+          const targetImg = imageList[nextIdx];
+          setSelectedImage(failedImages[targetImg] ? FALLBACK_IMAGE : targetImg);
           return nextIdx;
         });
       }
@@ -98,9 +107,11 @@ export function ModernInnerShadowCardVariant1({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImage, imageList]);
+  }, [selectedImage, imageList, failedImages]);
 
-  const currentImage = imageList[currentImageIndex] || image;
+  const rawImage = imageList[currentImageIndex] || image;
+  const isCurrentFailed = Boolean(failedImages[rawImage]);
+  const currentImage = isCurrentFailed ? FALLBACK_IMAGE : rawImage;
 
   return (
     <>
@@ -108,7 +119,7 @@ export function ModernInnerShadowCardVariant1({
         {/* UI del Carrusel en la parte superior con cursor de zoom */}
         <div
           onClick={() => setSelectedImage(currentImage)}
-          className="relative h-48 w-full cursor-zoom-in overflow-hidden rounded-t-lg bg-gray-900 group/slider select-none"
+          className="relative h-48 w-full cursor-zoom-in overflow-hidden rounded-t-lg bg-gray-900 group/slider select-none border-b border-gray-800"
           title="Haz clic para ampliar la imagen"
         >
           <Image
@@ -117,6 +128,11 @@ export function ModernInnerShadowCardVariant1({
             width={500}
             height={192}
             className="h-48 w-full rounded-t-lg object-cover transition-transform duration-500 ease-in-out group-hover:scale-105"
+            onError={() => {
+              if (!failedImages[rawImage]) {
+                setFailedImages((prev) => ({ ...prev, [rawImage]: true }));
+              }
+            }}
           />
 
           {/* Tag de la Categoría */}
@@ -229,7 +245,13 @@ export function ModernInnerShadowCardVariant1({
             <img
               src={selectedImage}
               alt={`${title} - Vista ampliada ${currentImageIndex + 1}`}
-              className="max-h-[90vh] max-w-5xl rounded-lg object-contain shadow-2xl"
+              className="max-h-[90vh] max-w-5xl rounded-lg object-contain shadow-2xl border border-gray-800 bg-gray-950/50"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (target.src !== FALLBACK_IMAGE) {
+                  target.src = FALLBACK_IMAGE;
+                }
+              }}
             />
 
             {/* Contador / Indicador de imagen en modal */}
