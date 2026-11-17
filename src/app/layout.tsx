@@ -14,7 +14,7 @@ import DatadogInit from "@/components/datadog/datadog-init";
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Portfolio - IDE Style",
+  title: "Jonathan Matías Gómez | Ingeniero en Informática & Full Stack",
   description: "A developer portfolio styled like a modern IDE",
 };
 

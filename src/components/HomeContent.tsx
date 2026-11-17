@@ -13,17 +13,19 @@ export function HomeContent() {
 
           {/* Photo Container */}
           <div className="relative h-28 w-28 sm:h-32 sm:w-32 overflow-hidden rounded-2xl border-2 border-cyan-400/50 bg-[#1e1e1e] p-1 shadow-2xl">
-            <Image
-              src="/foto_profile.jpg"
-              alt="Jonathan Matias Gomez"
-              width={128}
-              height={128}
-              className="h-full w-full rounded-xl object-cover object-top transition-transform duration-500 group-hover:scale-105"
-              priority
-            />
+            <div className="h-full w-full overflow-hidden rounded-xl">
+              <Image
+                src="/foto_profile.jpg"
+                alt="Jonathan Matias Gomez"
+                width={128}
+                height={128}
+                className="h-full w-full rounded-xl object-cover object-[center_65%] scale-125 transition-transform duration-500 group-hover:scale-[1.32]"
+                priority
+              />
+            </div>
             {/* Live Status Badge */}
             <div
-              className="absolute bottom-2 right-2 flex items-center justify-center rounded-full bg-gray-900/90 p-0.5 shadow-md border border-gray-700"
+              className="absolute bottom-2 right-2 z-10 flex items-center justify-center rounded-full bg-gray-900/90 p-0.5 shadow-md border border-gray-700"
               title="Disponible para proyectos"
             >
               <span className="relative flex h-3 w-3">

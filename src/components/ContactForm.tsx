@@ -145,15 +145,17 @@ export function ContactForm() {
       {/* Google reCAPTCHA v2 Widget posicionado justo sobre el botón de envío */}
       <div className="flex min-h-[78px] items-center justify-center py-2">
         {isMounted ? (
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={siteKey}
-            theme="dark"
-            onChange={handleCaptchaChange}
-            onExpired={handleCaptchaExpired}
-          />
+          <div className="flex h-[76px] w-[302px] items-center justify-center overflow-hidden rounded-md bg-[#222222]">
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={siteKey}
+              theme="dark"
+              onChange={handleCaptchaChange}
+              onExpired={handleCaptchaExpired}
+            />
+          </div>
         ) : (
-          <div className="h-[78px] w-[304px] animate-pulse rounded bg-gray-700/40" />
+          <div className="h-[76px] w-[302px] animate-pulse rounded-md bg-gray-700/40" />
         )}
       </div>
 
